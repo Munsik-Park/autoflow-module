@@ -30,7 +30,7 @@ Helpful:
 A report that names:
 
 - the pull request and the head commit that was reviewed;
-- each finding once, with the reviewers that raised it, its severity, and whether it holds, and the grounds when it does not hold or holds in part;
+- each finding once, with its severity and whether it holds, and the grounds when it does not hold or holds in part;
 - the highest severity among the findings that hold.
 
 Beside the report, each reviewer's review as the reviewer wrote it.
