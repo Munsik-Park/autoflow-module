@@ -7,6 +7,7 @@ Each module is a folder holding one `SKILL.md`, which defines the module: what i
 | Module | Goal |
 | --- | --- |
 | [ci](ci/SKILL.md) | Each pull request has a CI verdict and its ground. |
+| [delivery](delivery/SKILL.md) | Each branch of the change is pushed and has a pull request whose body lets the operator decide on it. |
 | [review](review/SKILL.md) | The pull request is reviewed, and its verdict and findings are set out in one report. |
 
 ## Running a module
