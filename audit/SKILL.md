@@ -44,6 +44,8 @@ Findings, each with its severity and `path:line`, and recommendations.
 
 On a re-score, which items were scored afresh and which were inherited.
 
+When the work stops, leave what was done and why it stopped.
+
 ## Default
 
 - Score these items: authentication and authorization, input validation, data exposure, infrastructure isolation, dependencies.
