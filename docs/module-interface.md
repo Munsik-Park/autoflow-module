@@ -9,14 +9,15 @@ This document sets the form in which an AutoFlow module describes its work.
 1. Overview
 2. Terms
 3. Flow
-4. Module definition
-5. Writing guidance
-6. Writing rules
-7. Example
-8. Module locations
-9. Version
-10. Appendix: stages and reference compositions
-11. Open questions
+4. Work locations
+5. Module definition
+6. Writing guidance
+7. Writing rules
+8. Example
+9. Module locations
+10. Version
+11. Appendix: stages and reference compositions
+12. Open questions
 
 ## Overview
 
@@ -35,6 +36,12 @@ A module takes on one piece of the work AutoFlow handles. When every module desc
 ## Flow
 
 The coordination session reads `description` to choose the module that fits the issue and the situation, prepares what `input` names from the results gathered so far, and calls the module by `name`. The work session works toward `goal`, and when it reaches `exit` it leaves `output` and ends. For the behavior and judgment criteria it needs during the work, it follows those the coordination session gave, and `default` when it was given none. The coordination session looks at `output`, judges whether the goal was reached, and decides what comes next.
+
+## Work locations
+
+- The coordination session gives each module run a work folder with the call. Every file in it is the module run's: everything `output` names, and the work session's own working files.
+- Inputs are given as values or paths. The work session reads them where they are.
+- A module that changes the target repository leaves the change as commits in the checkout it works in.
 
 ## Module definition
 
