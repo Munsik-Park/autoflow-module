@@ -27,13 +27,12 @@ Helpful:
 ## Exit
 
 - End when every pull request has a verdict.
-- When a pull request cannot be read, record it as not judged and go on with the others.
 
 ## Output
 
 For each pull request:
 
-- the verdict: green, not-run, failing, timed out or conflicting;
+- the CI verdict;
 - its ground, including the commit judged.
 
 For each added test file, the CI job that ran it.
