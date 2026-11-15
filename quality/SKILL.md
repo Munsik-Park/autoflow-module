@@ -41,6 +41,8 @@ Findings with their severity and `path:line`, and recommendations.
 
 On a re-score, which items were scored afresh and which were inherited.
 
+When the work stops, leave what was done and why it stopped.
+
 ## Default
 
 - Score these items: completeness, quality, test coverage, test quality, security (from the audit), fit, impact scope, minimal implementation, commit conventions, documentation updates.
