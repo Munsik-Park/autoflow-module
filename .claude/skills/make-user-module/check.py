@@ -15,7 +15,8 @@ the Writing rules of docs/module-interface.md that can be checked mechanically:
   `## Input`, `## Exit`, `## Output`, `## Default` as the default modules head
   them;
 - `name`, `description` and `goal` are written as text, in a form that YAML
-  1.1 and YAML 1.2 readers read as the same text (below);
+  1.1 and YAML 1.2 readers read as the same text, and every plain value of
+  the front matter is one they read as text (below);
 - `name` uses only lowercase letters, digits and hyphens, does not start or
   end with a hyphen, has no consecutive hyphens, and is at most 64 characters;
 - `description` is at most 1024 characters.
@@ -32,9 +33,9 @@ end, or `#` after a space or a tab, and the like) does not meet the front matter
 rule.
 
 `name`, `description` and `metadata.goal` are accepted only in forms that YAML
-1.1 and YAML 1.2 readers read as text, and as the same text check.py reads; any
-other form does not meet the front matter rule, and the line says how to write
-it:
+1.1 and YAML 1.2 readers read as text, and as the same text check.py reads, and
+every other plain value only in a form they read as text; any other form does
+not meet the front matter rule, and the line says how to write it:
 
 - Characters. In the front matter, including its two `---` lines, the only
   whitespace is space, tab and the line end (LF; a CRLF line end is read as
@@ -47,10 +48,11 @@ it:
   as YAML does.
 - `name` is one line, plain or quoted; a block scalar for `name` is not
   accepted.
-- A plain value (not quoted, not a block scalar) is accepted only when it
-  starts with a letter (a character whose Unicode category starts with L) and
-  is not a YAML 1.1 null or boolean word (`null`, `y`, `n`, `yes`, `no`,
-  `true`, `false`, `on`, `off`, in any case); an empty plain value is null.
+- A plain value (not quoted, not a block scalar) of any key, top-level or
+  nested, is accepted only when it starts with a letter (a character whose
+  Unicode category starts with L) and is not a YAML 1.1 null or boolean word
+  (`null`, `y`, `n`, `yes`, `no`, `true`, `false`, `on`, `off`, in any case);
+  an empty plain value is null.
   Any other plain value must be quoted. Every plain null, boolean, number,
   date, timestamp, merge key (`<<`) and value key (`=`) of YAML 1.1 and of the
   YAML 1.2 core schema, and every plain symbol (`:x`) of Ruby's YAML reader,
@@ -167,9 +169,9 @@ class Block(str):
 # end with LF (a CRLF line end is read as LF).
 WS = " \t"
 
-# A plain value of `name`, `description` or `metadata.goal` is taken as text only
-# when it starts with a letter and is none of the YAML 1.1 null and boolean
-# words, in any case; otherwise it must be quoted.
+# A plain value (of any key) is taken as text only when it starts with a letter
+# and is none of the YAML 1.1 null and boolean words, in any case; otherwise it
+# must be quoted.
 NULL_WORD_RE = re.compile(r"(?i:null)")
 BOOL_WORD_RE = re.compile(r"(?i:y|n|yes|no|true|false|on|off)")
 
@@ -653,6 +655,16 @@ def main(argv):
             problems[RULE_FRONT_MATTER].append("no 'goal' under 'metadata'")
         else:
             text_problem("metadata.goal", meta["goal"], problems)
+        # Every other plain value meets the same plain scalar rule.
+        for key, value in data.items():
+            if key in ("name", "description"):
+                continue
+            if isinstance(value, dict):
+                for nkey, nvalue in value.items():
+                    if (key, nkey) != ("metadata", "goal") and isinstance(nvalue, Plain):
+                        text_problem(f"{key}.{nkey}", nvalue, problems)
+            elif isinstance(value, Plain):
+                text_problem(key, value, problems)
 
         if name_ok:
             name = str(data["name"])
