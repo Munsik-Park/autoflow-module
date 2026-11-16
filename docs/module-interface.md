@@ -96,7 +96,7 @@ A module definition follows the `SKILL.md` format of the Agent Skills specificat
 - The body has `input`, `exit`, `output` and `default` each as a section with a heading. An optional item that is not written has no section.
 - `name` uses only lowercase letters, digits and hyphens, and is at most 64 characters. It does not start or end with a hyphen and has no consecutive hyphens.
 - `description` is at most 1024 characters.
-- A default module and a user module do not share a name.
+- A user module with the `name` of a default module is used in its place.
 
 ## Example
 
@@ -117,7 +117,7 @@ Module definitions are kept in two places.
 - Default modules: modules distributed with the AutoFlow plugin.
 - User modules: modules a user makes and uses in every workspace.
 
-The coordination session scans both places to build the list of modules. In building the list it reads only the `name`, `goal` and `description` of each module definition, and reads the whole definition only of the module it chooses.
+The coordination session scans both places to build the list of modules. When a user module has the `name` of a default module, the list holds the user module in its place. In building the list it reads only the `name`, `goal` and `description` of each module definition, and reads the whole definition only of the module it chooses.
 
 ## Version
 
