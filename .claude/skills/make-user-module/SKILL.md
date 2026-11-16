@@ -19,7 +19,7 @@ Paths below are relative to the repository root, the folder holding `docs/module
 - Write nothing in a user module location until the draft meets every rule `check.py` checks, the user has seen the draft and agreed to it, and the user has confirmed the location.
 - While a rule is not met, write nothing and tell the user which rule, as `check.py` names it.
 - When `name` is the name of a default module, tell the user that the user module will be used in that default module's place, and write only on the user's confirmation.
-- Do not replace a folder of the same name already in the location without the user's confirmation.
+- Do not replace a folder of the same name already in the location without the user's confirmation. Create `<location>/<name>` so that the creation fails when the folder already exists, and on that failure write nothing.
 - In the location, write `<location>/<name>/SKILL.md` and nothing else.
 - Change nothing in this repository.
 
@@ -29,7 +29,7 @@ Paths below are relative to the repository root, the folder holding `docs/module
 
 2. **Learn what the module is to do.** Take what the user wants the module to do from the request. Ask the user for what each item of the interface's Module definition needs and the request does not settle.
 
-3. **Draft the module definition.** Choose `name` with the user. Write the draft as `<draft folder>/<name>/SKILL.md`, where `<draft folder>` is a new temporary folder outside this repository and outside any user module location (for example one made with `mktemp -d`). Write the front matter in the plain form the default modules use, which `check.py` reads.
+3. **Draft the module definition.** Choose `name` with the user. Write the draft as `<draft folder>/<name>/SKILL.md`, where `<draft folder>` is a new temporary folder outside this repository and outside any user module location (for example one made with `mktemp -d`). Write the front matter in the plain form the default modules use, which `check.py` reads, with `name`, `description` and `goal` as text: quote a value (`"…"` or `'…'`) that a YAML reader would otherwise read as null, a boolean, a number or a date.
 
 4. **Check the draft.** Run:
 
@@ -45,9 +45,9 @@ Paths below are relative to the repository root, the folder holding `docs/module
 
 7. **Confirm the location.** Propose `~/.autoflow/modules`, the `modules` folder of the AutoFlow home, as the user module location. The user may name another. Use the location the user confirms, with `~` expanded to the home folder.
 
-8. **Existing folder.** When `<location>/<name>` already exists, show the user what it holds and ask whether to replace it. Replacing removes that folder and everything in it. Without the user's confirmation, write nothing; go back to step 5 for another `name`, or stop.
+8. **Existing folder.** When `<location>/<name>` already exists, show the user what it holds and ask whether to replace it. Replacing removes that folder and everything in it, in step 9 right before the folder is created again. Without the user's confirmation, write nothing; go back to step 5 for another `name`, or stop.
 
-9. **Write.** Create `<location>` if it does not exist. Write `<location>/<name>/SKILL.md` with the draft's content, and nothing else in the location. Run `check.py` on the written `SKILL.md`; it must exit 0.
+9. **Write.** Create `<location>` if it does not exist. When the user confirmed replacing `<location>/<name>` in step 8, remove it now, right before the next command. Create `<location>/<name>` with a command that fails when it already exists, such as `mkdir "<location>/<name>"` (without `-p`). When that fails, the folder appeared after step 8: write nothing and go back to step 8. Otherwise write `<location>/<name>/SKILL.md` with the draft's content, and nothing else in the location. Run `check.py` on the written `SKILL.md`; it must exit 0.
 
 10. **Finish.** Remove the draft folder. Tell the user the path written, and, when the name is a default module's, that the user module is used in that module's place.
 
