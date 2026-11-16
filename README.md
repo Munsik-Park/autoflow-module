@@ -27,6 +27,17 @@ Each module is a folder holding one `SKILL.md`, which defines the module: what i
 
 For now, a module is run by giving a session the path of the module's `SKILL.md` and the inputs its `input` section names. Criteria other than the module's defaults are given in the same instructions.
 
+## Making a user module
+
+A user module is a module a user makes and uses in every workspace ([Module locations](docs/module-interface.md#module-locations)). The Claude Code project skill [`make-user-module`](.claude/skills/make-user-module/SKILL.md) makes one.
+
+- Where to run it: in a Claude Code session opened in a clone of this repository, as `/make-user-module`, followed by what the module is to do.
+- What it asks: what the module definition needs and the request does not settle; agreement to the drafted module definition, which it shows; the user module location, proposing `~/.autoflow/modules`, the `modules` folder of the AutoFlow home, or another the user names; confirmation when `name` is the name of a default module, since the user module is then used in that module's place; and confirmation before it replaces a folder of the same name already in the location.
+- What it checks: before writing, it checks the draft with [`check.py`](.claude/skills/make-user-module/check.py) against the Writing rules that can be checked mechanically, and writes nothing while a rule is not met, saying which rule. `check.py` can also be run alone: `python3 .claude/skills/make-user-module/check.py <folder>/<name>/SKILL.md`.
+- Where it writes: `<location>/<name>/SKILL.md`, and nothing else in the location.
+
+The skill is not a module. It is not a top-level folder of this repository holding a `SKILL.md`, so it is not in the list of modules.
+
 ## Version
 
 The version of the modules in this repository is in [`VERSION`](VERSION) at the repository root. It is separate from the version of the module interface, which is a date given in that document's [Version](docs/module-interface.md#version) section.
