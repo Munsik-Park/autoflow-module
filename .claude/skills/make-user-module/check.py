@@ -14,11 +14,10 @@ the Writing rules of docs/module-interface.md that can be checked mechanically:
   `Default` only as sections with content when present, each headed
   `## Input`, `## Exit`, `## Output`, `## Default` as the default modules head
   them;
-- `name`, `description` and `goal` are text;
+- `name`, `description` and `goal` are written as text, in a form every
+  YAML reader reads as the same text (below);
 - `name` uses only lowercase letters, digits and hyphens, does not start or
   end with a hyphen, has no consecutive hyphens, and is at most 64 characters;
-  the whole value is matched, so a `name` that is not one line of text (for
-  example a block scalar that keeps its final newline) does not meet it;
 - `description` is at most 1024 characters.
 
 The front matter is read as the plain YAML the default modules use: `key: value`
@@ -27,14 +26,25 @@ single-quoted scalar on one line (where `''` stands for `'`), folded (`>`, `>-`)
 and literal (`|`, `|-`) block scalars, and one level of nested keys under a key
 with no value. A front matter written in any other form (flow collections,
 comments, anchors, tags, sequences, deeper nesting, quoted values over several
-lines, and the like) does not meet the front matter rule.
+lines, a plain value holding `:` before a space or a tab or at its end, or
+`#` after a space or a tab, and the like) does not meet the front matter rule.
 
-Quoted and block scalars are text. A plain scalar is read as a YAML reader
-reads it, under the YAML 1.1 or the 1.2 core schema: null (empty, `~`, `null`),
-a boolean (`true`, `false`, `yes`, `no`, `on`, `off`, in any case), an integer,
-a float, or a date or timestamp is not text. When `name`, `description` or
-`metadata.goal` is not text, it does not meet the front matter rule; the value
-must be text, quoted when it would otherwise not be read as text.
+`name`, `description` and `metadata.goal` are accepted only in forms that every
+YAML reader reads as text, and as the same text check.py reads; any other form
+of them does not meet the front matter rule, and the line says how to write it:
+
+- `name` is one line, plain or quoted; a block scalar for `name` is not
+  accepted.
+- A plain value is not accepted when it is empty, when it is a null or boolean
+  word (`null`, `true`, `false`, `yes`, `no`, `on`, `off`, in any case), or when
+  it starts with a digit, `+`, `-`, `.`, `~` or `:`; such a value must be
+  quoted. Under YAML 1.1, under the YAML 1.2 core schema, and in Ruby's YAML
+  reader, every plain null, boolean, number, date, timestamp or symbol has one
+  of these forms, so a plain value that is accepted is read as text.
+- A block scalar (for any key) whose first content line is blank is not
+  accepted; its text starts on the line right after the indicator. A block's
+  indentation is that of its first content line; folding and chomping are
+  those of YAML.
 
 Sections are the level-2 headings (`## `) outside fenced code blocks; a level-1
 heading also ends a section. A deeper heading (`###` and below) belongs to the
@@ -118,47 +128,30 @@ class FrontMatterError(Exception):
     pass
 
 
-class NonText:
-    """A plain scalar a YAML reader reads as something other than text."""
+class Plain(str):
+    """The text of a plain scalar, with the number of the line it is on."""
 
-    def __init__(self, kind, text, lineno):
-        self.kind = kind
-        self.text = text
-        self.lineno = lineno
-
-
-NULL_RE = re.compile(r"~|null|Null|NULL")
-BOOL_RE = re.compile(r"(?i:true|false|yes|no|on|off)")
-INT_RE = re.compile(
-    r"[-+]?(?:0b[01_]+|0o[0-7]+|0x[0-9a-fA-F_]+|0[0-7_]*|[1-9][0-9_]*"
-    r"|[1-9][0-9_]*(?::[0-5]?[0-9])+|[0-9]+)"
-)
-FLOAT_RE = re.compile(
-    r"[-+]?(?:[0-9][0-9_]*)?\.[0-9_]*(?:[eE][-+]?[0-9]+)?"
-    r"|[-+]?[0-9][0-9_]*(?:\.[0-9_]*)?[eE][-+]?[0-9]+"
-    r"|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\.[0-9_]*"
-    r"|[-+]?\.(?:inf|Inf|INF)|\.(?:nan|NaN|NAN)"
-)
-TIMESTAMP_RE = re.compile(
-    r"[0-9]{4}-[0-9]{2}-[0-9]{2}"
-    r"|[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}(?:[Tt]|[ \t]+)[0-9]{1,2}:[0-9]{2}:[0-9]{2}"
-    r"(?:\.[0-9]*)?(?:[ \t]*(?:Z|[-+][0-9]{1,2}(?::[0-9]{2})?))?"
-)
+    def __new__(cls, text, lineno):
+        obj = super().__new__(cls, text)
+        obj.lineno = lineno
+        return obj
 
 
-def plain_kind(value):
-    """Return what a YAML reader reads a plain scalar as, or None for text."""
-    if value == "" or NULL_RE.fullmatch(value):
-        return "null"
-    if BOOL_RE.fullmatch(value):
-        return "a boolean"
-    if INT_RE.fullmatch(value):
-        return "an integer"
-    if FLOAT_RE.fullmatch(value) and value not in (".", "-.", "+."):
-        return "a float"
-    if TIMESTAMP_RE.fullmatch(value):
-        return "a date or timestamp"
-    return None
+class Block(str):
+    """The text of a block scalar, with its key's line number and indicator."""
+
+    def __new__(cls, text, lineno, style):
+        obj = super().__new__(cls, text)
+        obj.lineno = lineno
+        obj.style = style
+        return obj
+
+
+# A plain value of `name`, `description` or `metadata.goal` is taken as text only
+# when it is none of these; otherwise it must be quoted.
+NULL_WORD_RE = re.compile(r"(?i:null)")
+BOOL_WORD_RE = re.compile(r"(?i:true|false|yes|no|on|off)")
+QUOTE_FIRST = "0123456789+-.~:"
 
 
 DQ_ESCAPES = {"\\": "\\", '"': '"', "n": "\n", "t": "\t", "/": "/"}
@@ -208,73 +201,97 @@ def double_quoted_value(value, lineno):
 def plain_value(text, lineno):
     """Return the value of a plain or quoted scalar, or raise.
 
-    A quoted scalar is returned as text. A plain scalar is returned as text,
-    or as NonText when a YAML reader reads it as something other than text.
+    A quoted scalar is returned as str, a plain scalar as Plain.
     """
     value = text.strip()
     if not value:
-        return NonText("null", "", lineno)
+        return Plain("", lineno)
     if value[0] == '"':
         return double_quoted_value(value, lineno)
     if value[0] == "'":
         return single_quoted_value(value, lineno)
     if value[0] in PLAIN_FIRST_BAD:
         raise FrontMatterError(f"line {lineno}: value starts with '{value[0]}'")
-    if value.startswith("- ") or value == "-":
+    if re.match(r"-(?:[ \t]|$)", value):
         raise FrontMatterError(f"line {lineno}: value is a sequence entry")
-    if ": " in value or value.endswith(":"):
-        raise FrontMatterError(f"line {lineno}: value holds ': '")
-    if " #" in value:
-        raise FrontMatterError(f"line {lineno}: value holds ' #'")
-    kind = plain_kind(value)
-    if kind is not None:
-        return NonText(kind, value, lineno)
-    return value
+    if re.search(r":(?:[ \t]|$)", value):
+        raise FrontMatterError(f"line {lineno}: value holds ':' followed by a space, a tab or the line end")
+    if re.search(r"[ \t]#", value):
+        raise FrontMatterError(f"line {lineno}: value holds '#' after a space or a tab")
+    return Plain(value, lineno)
 
 
-def read_block(lines, start, parent_indent, style):
-    """Read a block scalar's content lines; return (value, next index)."""
-    content = []
+def read_block(lines, start, parent_indent, style, key_lineno):
+    """Read a block scalar's content lines; return (Block, next index).
+
+    The block's indentation is that of its first content line, which must not
+    be blank. After it, a line of spaces only is an empty line when it is no
+    longer than that indentation, and a content line of spaces otherwise.
+    """
+    content = []  # content lines without the indentation; None for an empty line
     indent = None
+    leading_blank = False
     i = start
     while i < len(lines):
         lineno, line = lines[i]
-        if line.strip() == "":
-            content.append("")
+        cur = len(line) - len(line.lstrip(" "))
+        rest = line[cur:]
+        if rest[:1] == "\t":
+            raise FrontMatterError(f"line {lineno}: tab in indentation")
+        if indent is None:
+            if rest == "":
+                leading_blank = True
+                i += 1
+                continue
+            if cur <= parent_indent:
+                break
+            if leading_blank:
+                raise FrontMatterError(
+                    f"line {key_lineno}: block scalar ('{style}') whose first line is blank; "
+                    f"start its text on the line right after '{style}'"
+                )
+            indent = cur
+        elif rest == "":
+            content.append(line[indent:] if len(line) > indent else None)
             i += 1
             continue
-        cur = len(line) - len(line.lstrip(" "))
-        if line[cur:cur + 1] == "\t":
-            raise FrontMatterError(f"line {lineno}: tab in indentation")
-        if cur <= parent_indent:
+        elif cur <= parent_indent:
             break
-        if indent is None:
-            indent = cur
         elif cur < indent:
             raise FrontMatterError(f"line {lineno}: block line less indented than the block")
         content.append(line[indent:])
         i += 1
-    # Trailing blank lines belong to no value under the chomping used here.
-    while content and content[-1] == "":
+    # Trailing empty lines belong to no value under the chomping used here.
+    while content and content[-1] is None:
         content.pop()
     if not content:
-        raise FrontMatterError(f"line {lines[start - 1][0]}: empty block scalar")
+        raise FrontMatterError(f"line {key_lineno}: empty block scalar")
     if style.startswith("|"):
-        value = "\n".join(content)
+        value = "\n".join("" if c is None else c for c in content)
     else:
+        # Folding: a line break between two lines that do not start with a space
+        # becomes a space, or is dropped when empty lines follow it (each empty
+        # line stands for one line break); next to a line that starts with a
+        # space, the line break is kept.
         value = content[0]
-        for prev, cur in zip(content, content[1:]):
-            if cur == "":
-                value += "\n"
-            elif prev == "":
-                value += cur
-            elif cur.startswith(" ") or prev.startswith(" "):
-                value += "\n" + cur
+        prev = content[0]
+        empties = 0
+        for c in content[1:]:
+            if c is None:
+                empties += 1
+                continue
+            if prev.startswith(" ") or c.startswith(" "):
+                value += "\n" * (empties + 1)
+            elif empties:
+                value += "\n" * empties
             else:
-                value += " " + cur
+                value += " "
+            value += c
+            prev = c
+            empties = 0
     if not style.endswith("-"):
         value += "\n"
-    return value, i
+    return Block(value, key_lineno, style), i
 
 
 def parse_front_matter(lines):
@@ -295,7 +312,7 @@ def parse_front_matter(lines):
         raw = m.group("value")
         i += 1
         if raw is not None and raw.strip() in BLOCK_INDICATORS:
-            data[key], i = read_block(lines, i, 0, raw.strip())
+            data[key], i = read_block(lines, i, 0, raw.strip(), lineno)
         elif raw is not None and raw.strip() != "":
             data[key] = plain_value(raw, lineno)
         else:
@@ -322,7 +339,7 @@ def parse_front_matter(lines):
                 nraw = nm.group("value")
                 i += 1
                 if nraw is not None and nraw.strip() in BLOCK_INDICATORS:
-                    nested[nkey], i = read_block(lines, i, nest_indent, nraw.strip())
+                    nested[nkey], i = read_block(lines, i, nest_indent, nraw.strip(), nlineno)
                 elif nraw is not None and nraw.strip() != "":
                     nested[nkey] = plain_value(nraw, nlineno)
                 else:
@@ -335,9 +352,9 @@ def parse_front_matter(lines):
                             raise FrontMatterError(
                                 f"line {nlineno}: key '{key}.{nkey}' has no value (only one level of nesting)"
                             )
-                    nested[nkey] = NonText("null", "", nlineno)
+                    nested[nkey] = Plain("", nlineno)
             if nest_indent is None:
-                data[key] = NonText("null", "", lineno)
+                data[key] = Plain("", lineno)
             else:
                 data[key] = nested
     return data
@@ -439,18 +456,43 @@ def show(text):
     return "'" + text.replace("\\", "\\\\").replace("\n", "\\n").replace("\t", "\\t") + "'"
 
 
-def text_problem(key, value, problems):
-    """Record under the front matter rule a value of `key` that is not text."""
-    if isinstance(value, NonText):
-        written = f"'{value.text}'" if value.text else "empty"
-        problems[RULE_FRONT_MATTER].append(
-            f"line {value.lineno}: '{key}' ({written}) is read as {value.kind}, not text; "
-            "it must be text, quoted when it would otherwise not be read as text"
+def text_problem(key, value, problems, one_line=False):
+    """Record under the front matter rule a value of `key` not written as text.
+
+    Return True when a problem was recorded. `one_line` is set for `name`,
+    which is written on one line, plain or quoted.
+    """
+    quote = "quote it (\"...\" or '...')"
+    if not isinstance(value, str):
+        msg = f"'{key}' is not a single value"
+    elif one_line and isinstance(value, Block):
+        msg = (
+            f"line {value.lineno}: '{key}' is a block scalar ('{value.style}'); "
+            f"write '{key}' on one line, plain or quoted"
         )
-    elif not isinstance(value, str):
-        problems[RULE_FRONT_MATTER].append(f"'{key}' is not a single value")
+    elif isinstance(value, Plain) and value == "":
+        msg = (
+            f"line {value.lineno}: '{key}' has no value, which a YAML reader reads as null; "
+            "write the value as text"
+        )
+    elif isinstance(value, Plain) and (NULL_WORD_RE.fullmatch(value) or BOOL_WORD_RE.fullmatch(value)):
+        kind = "null" if NULL_WORD_RE.fullmatch(value) else "a boolean"
+        msg = (
+            f"line {value.lineno}: '{key}' is written plain as '{value}', which a YAML reader "
+            f"reads as {kind}; {quote}"
+        )
+    elif isinstance(value, Plain) and value[0] in QUOTE_FIRST:
+        msg = (
+            f"line {value.lineno}: '{key}' is written plain as '{value}', which starts with "
+            f"'{value[0]}'; a plain value that starts with a digit, '+', '-', '.', '~' or ':' "
+            f"is not taken as text; {quote}"
+        )
     elif value == "":
-        problems[RULE_FRONT_MATTER].append(f"'{key}' is empty")
+        msg = f"'{key}' is empty"
+    else:
+        return False
+    problems[RULE_FRONT_MATTER].append(msg)
+    return True
 
 
 def main(argv):
@@ -509,11 +551,14 @@ def main(argv):
 
     name = None
     if data is not None:
+        name_ok = False
         for key in ("name", "description"):
             if key not in data:
                 problems[RULE_FRONT_MATTER].append(f"no '{key}'")
             else:
-                text_problem(key, data[key], problems)
+                bad = text_problem(key, data[key], problems, one_line=(key == "name"))
+                if key == "name":
+                    name_ok = not bad
         meta = data.get("metadata")
         if not isinstance(meta, dict):
             problems[RULE_FRONT_MATTER].append("no 'metadata' holding 'goal'")
@@ -522,8 +567,8 @@ def main(argv):
         else:
             text_problem("metadata.goal", meta["goal"], problems)
 
-        if isinstance(data.get("name"), str) and data["name"]:
-            name = data["name"]
+        if name_ok:
+            name = str(data["name"])
             shown = show(name)
             if not NAME_RE.fullmatch(name):
                 problems[RULE_NAME].append(f"{shown} has a character other than a lowercase letter, digit or hyphen")

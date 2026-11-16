@@ -29,7 +29,7 @@ Paths below are relative to the repository root, the folder holding `docs/module
 
 2. **Learn what the module is to do.** Take what the user wants the module to do from the request. Ask the user for what each item of the interface's Module definition needs and the request does not settle.
 
-3. **Draft the module definition.** Choose `name` with the user. Write the draft as `<draft folder>/<name>/SKILL.md`, where `<draft folder>` is a new temporary folder outside this repository and outside any user module location (for example one made with `mktemp -d`). Write the front matter in the plain form the default modules use, which `check.py` reads, with `name`, `description` and `goal` as text: quote a value (`"…"` or `'…'`) that a YAML reader would otherwise read as null, a boolean, a number or a date.
+3. **Draft the module definition.** Choose `name` with the user. Write the draft as `<draft folder>/<name>/SKILL.md`, where `<draft folder>` is a new temporary folder outside this repository and outside any user module location (for example one made with `mktemp -d`). Write the front matter in the plain form the default modules use, which `check.py` reads, with `name`, `description` and `goal` as text: write `name` on one line; quote a value of these three (`"…"` or `'…'`) that is a null or boolean word (`null`, `true`, `false`, `yes`, `no`, `on`, `off`, in any case) or starts with a digit, `+`, `-`, `.`, `~` or `:`; and start a block scalar's text on the line right after its indicator (`>`, `>-`, `|`, `|-`).
 
 4. **Check the draft.** Run:
 
