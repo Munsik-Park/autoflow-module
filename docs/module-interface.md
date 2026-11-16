@@ -35,7 +35,7 @@ A module takes on one piece of the work AutoFlow handles. When every module desc
 
 ## Flow
 
-The coordination session reads `description` to choose the module that fits the issue and the situation, prepares what `input` names from the results gathered so far, and calls the module by `name`. The work session works toward `goal`, and when it reaches `exit` it leaves `output` and ends. For the behavior and judgment criteria it needs during the work, it follows what sets them, and `default` where nothing does. The coordination session looks at `output`, judges whether the goal was reached, and decides what comes next.
+The coordination session reads `description` to choose the module that fits the issue and the situation, prepares what `input` names from the results gathered so far, and calls the module by `name`. The work session works toward `goal`, and when it reaches `exit` it leaves `output` and ends. For the behavior and judgment criteria it needs during the work, it first finds what sets them and follows it, and uses `default` where it finds nothing. The coordination session looks at `output`, judges whether the goal was reached, and decides what comes next.
 
 ## Work locations
 
