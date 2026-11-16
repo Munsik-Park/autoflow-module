@@ -14,33 +14,48 @@ the Writing rules of docs/module-interface.md that can be checked mechanically:
   `Default` only as sections with content when present, each headed
   `## Input`, `## Exit`, `## Output`, `## Default` as the default modules head
   them;
-- `name`, `description` and `goal` are written as text, in a form every
-  YAML reader reads as the same text (below);
+- `name`, `description` and `goal` are written as text, in a form that YAML
+  1.1 and YAML 1.2 readers read as the same text (below);
 - `name` uses only lowercase letters, digits and hyphens, does not start or
   end with a hyphen, has no consecutive hyphens, and is at most 64 characters;
 - `description` is at most 1024 characters.
 
 The front matter is read as the plain YAML the default modules use: `key: value`
-lines whose value is a plain scalar, a double-quoted scalar on one line or a
-single-quoted scalar on one line (where `''` stands for `'`), folded (`>`, `>-`)
-and literal (`|`, `|-`) block scalars, and one level of nested keys under a key
-with no value. A front matter written in any other form (flow collections,
-comments, anchors, tags, sequences, deeper nesting, quoted values over several
-lines, a plain value holding `:` before a space or a tab or at its end, or
-`#` after a space or a tab, and the like) does not meet the front matter rule.
+lines whose value is a plain scalar, a double-quoted scalar on one line (with
+only the escapes `\\\\`, `\\"`, `\\n` and `\\t`, which YAML 1.1 and YAML 1.2 both
+read), a single-quoted scalar on one line (where `''` stands for `'`), folded
+(`>`, `>-`) and literal (`|`, `|-`) block scalars, and one level of nested keys
+under a key with no value. A front matter written in any other form (flow
+collections, comments, anchors, tags, sequences, deeper nesting, quoted values
+over several lines, a plain value holding `:` before a space or a tab or at its
+end, or `#` after a space or a tab, and the like) does not meet the front matter
+rule.
 
-`name`, `description` and `metadata.goal` are accepted only in forms that every
-YAML reader reads as text, and as the same text check.py reads; any other form
-of them does not meet the front matter rule, and the line says how to write it:
+`name`, `description` and `metadata.goal` are accepted only in forms that YAML
+1.1 and YAML 1.2 readers read as text, and as the same text check.py reads; any
+other form does not meet the front matter rule, and the line says how to write
+it:
 
+- Characters. In the front matter, including its two `---` lines, the only
+  whitespace is space, tab and the line end (LF; a CRLF line end is read as
+  LF). A character other than these that Python reports as whitespace, a
+  control character (Unicode category Cc) other than tab and LF, a format
+  (Cf), line separator (Zl), paragraph separator (Zp) or space separator (Zs)
+  character other than space, and U+FFFE and U+FFFF do not meet the front
+  matter rule wherever they are; the line names each one's code point and
+  line. Where check.py strips front matter text, it strips only space and tab,
+  as YAML does.
 - `name` is one line, plain or quoted; a block scalar for `name` is not
   accepted.
-- A plain value is not accepted when it is empty, when it is a null or boolean
-  word (`null`, `true`, `false`, `yes`, `no`, `on`, `off`, in any case), or when
-  it starts with a digit, `+`, `-`, `.`, `~` or `:`; such a value must be
-  quoted. Under YAML 1.1, under the YAML 1.2 core schema, and in Ruby's YAML
-  reader, every plain null, boolean, number, date, timestamp or symbol has one
-  of these forms, so a plain value that is accepted is read as text.
+- A plain value (not quoted, not a block scalar) is accepted only when it
+  starts with a letter (a character whose Unicode category starts with L) and
+  is not a YAML 1.1 null or boolean word (`null`, `y`, `n`, `yes`, `no`,
+  `true`, `false`, `on`, `off`, in any case); an empty plain value is null.
+  Any other plain value must be quoted. Every plain null, boolean, number,
+  date, timestamp, merge key (`<<`) and value key (`=`) of YAML 1.1 and of the
+  YAML 1.2 core schema, and every plain symbol (`:x`) of Ruby's YAML reader,
+  either starts with a character that is not a letter or is one of these
+  words.
 - A block scalar (for any key) whose first content line is blank is not
   accepted; its text starts on the line right after the indicator. A block's
   indentation is that of its first content line; folding and chomping are
@@ -71,6 +86,7 @@ Python 3 standard library only.
 import os
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 RULE_FORMAT = (
@@ -147,14 +163,57 @@ class Block(str):
         return obj
 
 
+# The only whitespace of the front matter: space and tab within a line; lines
+# end with LF (a CRLF line end is read as LF).
+WS = " \t"
+
 # A plain value of `name`, `description` or `metadata.goal` is taken as text only
-# when it is none of these; otherwise it must be quoted.
+# when it starts with a letter and is none of the YAML 1.1 null and boolean
+# words, in any case; otherwise it must be quoted.
 NULL_WORD_RE = re.compile(r"(?i:null)")
-BOOL_WORD_RE = re.compile(r"(?i:true|false|yes|no|on|off)")
-QUOTE_FIRST = "0123456789+-.~:"
+BOOL_WORD_RE = re.compile(r"(?i:y|n|yes|no|true|false|on|off)")
 
 
-DQ_ESCAPES = {"\\": "\\", '"': '"', "n": "\n", "t": "\t", "/": "/"}
+def bad_character(ch):
+    """Return True for a character the front matter must not hold.
+
+    These are every character other than space, tab and LF that Python reports
+    as whitespace, every control character (Cc) other than tab and LF, every
+    format (Cf), line separator (Zl) and paragraph separator (Zp) character,
+    every space separator (Zs) other than space, and U+FFFE and U+FFFF, which
+    are outside the characters YAML reads.
+    """
+    if ch in " \t\n":
+        return False
+    if ch.isspace() or ch in "\ufffe\uffff":
+        return True
+    cat = unicodedata.category(ch)
+    return cat in ("Cc", "Cf", "Zl", "Zp", "Zs")
+
+
+def character_problems(lines):
+    """Return one message per line [(lineno, text)] holding a bad character."""
+    msgs = []
+    for lineno, line in lines:
+        seen = []
+        for ch in line:
+            if bad_character(ch) and ch not in seen:
+                seen.append(ch)
+        if seen:
+            names = ", ".join(
+                f"U+{ord(ch):04X}" + (f" ({unicodedata.name(ch)})" if unicodedata.name(ch, "") else "")
+                for ch in seen
+            )
+            msgs.append(
+                f"line {lineno}: character {names}; the front matter holds no whitespace other "
+                "than space, tab and the line end, and no control, format or separator "
+                "character; remove it, or write a space or a tab in its place"
+            )
+    return msgs
+
+
+# The escapes YAML 1.1 and YAML 1.2 both read; `\/` is YAML 1.2 only.
+DQ_ESCAPES = {"\\": "\\", '"': '"', "n": "\n", "t": "\t"}
 
 
 def single_quoted_value(value, lineno):
@@ -185,7 +244,11 @@ def double_quoted_value(value, lineno):
         if ch == "\\":
             esc = value[i + 1:i + 2]
             if esc not in DQ_ESCAPES:
-                raise FrontMatterError(f"line {lineno}: escape '\\{esc}' in a double-quoted value")
+                raise FrontMatterError(
+                    f"line {lineno}: escape '\\{esc}' in a double-quoted value; "
+                    "the escapes accepted are '\\\\', '\\\"', '\\n' and '\\t'; "
+                    "write any other character as itself"
+                )
             out.append(DQ_ESCAPES[esc])
             i += 2
             continue
@@ -203,7 +266,7 @@ def plain_value(text, lineno):
 
     A quoted scalar is returned as str, a plain scalar as Plain.
     """
-    value = text.strip()
+    value = text.strip(WS)
     if not value:
         return Plain("", lineno)
     if value[0] == '"':
@@ -300,7 +363,7 @@ def parse_front_matter(lines):
     i = 0
     while i < len(lines):
         lineno, line = lines[i]
-        if line.strip() == "":
+        if line.strip(WS) == "":
             i += 1
             continue
         m = KEY_RE.match(line)
@@ -311,16 +374,16 @@ def parse_front_matter(lines):
             raise FrontMatterError(f"line {lineno}: key '{key}' repeated")
         raw = m.group("value")
         i += 1
-        if raw is not None and raw.strip() in BLOCK_INDICATORS:
-            data[key], i = read_block(lines, i, 0, raw.strip(), lineno)
-        elif raw is not None and raw.strip() != "":
+        if raw is not None and raw.strip(WS) in BLOCK_INDICATORS:
+            data[key], i = read_block(lines, i, 0, raw.strip(WS), lineno)
+        elif raw is not None and raw.strip(WS) != "":
             data[key] = plain_value(raw, lineno)
         else:
             nested = {}
             nest_indent = None
             while i < len(lines):
                 nlineno, nline = lines[i]
-                if nline.strip() == "":
+                if nline.strip(WS) == "":
                     i += 1
                     continue
                 cur = len(nline) - len(nline.lstrip(" "))
@@ -338,13 +401,13 @@ def parse_front_matter(lines):
                     raise FrontMatterError(f"line {nlineno}: key '{key}.{nkey}' repeated")
                 nraw = nm.group("value")
                 i += 1
-                if nraw is not None and nraw.strip() in BLOCK_INDICATORS:
-                    nested[nkey], i = read_block(lines, i, nest_indent, nraw.strip(), nlineno)
-                elif nraw is not None and nraw.strip() != "":
+                if nraw is not None and nraw.strip(WS) in BLOCK_INDICATORS:
+                    nested[nkey], i = read_block(lines, i, nest_indent, nraw.strip(WS), nlineno)
+                elif nraw is not None and nraw.strip(WS) != "":
                     nested[nkey] = plain_value(nraw, nlineno)
                 else:
                     j = i
-                    while j < len(lines) and lines[j][1].strip() == "":
+                    while j < len(lines) and lines[j][1].strip(WS) == "":
                         j += 1
                     if j < len(lines):
                         nxt = lines[j][1]
@@ -363,14 +426,36 @@ def parse_front_matter(lines):
 def split_front_matter(text):
     """Return (front matter lines, body lines with numbers), or raise."""
     lines = text.split("\n")
-    if not lines or lines[0].rstrip() != "---":
+    if not lines or lines[0].rstrip(WS) != "---":
         raise FrontMatterError("the file does not start with a '---' front matter line")
     for idx in range(1, len(lines)):
-        if lines[idx].rstrip() == "---":
+        if lines[idx].rstrip(WS) == "---":
             fm = [(n + 1, lines[n]) for n in range(1, idx)]
             body = [(n + 1, lines[n]) for n in range(idx + 1, len(lines))]
             return fm, body
     raise FrontMatterError("the front matter has no closing '---' line")
+
+
+def front_matter_extent(text):
+    """Return the lines [(lineno, text)] whose characters are checked.
+
+    These are the front matter with its two '---' lines. When the first line is
+    not '---', it is checked alone if it is '---' once its bad characters are
+    removed. When there is no closing '---' line, the lines run to the first
+    later line starting with '---', or to the end of the file.
+    """
+    lines = text.split("\n")
+    numbered = [(n + 1, line) for n, line in enumerate(lines)]
+    if lines[0].rstrip(WS) != "---":
+        first = "".join(ch for ch in lines[0] if not bad_character(ch)).strip(WS)
+        return numbered[:1] if first == "---" else []
+    for idx in range(1, len(lines)):
+        if lines[idx].rstrip(WS) == "---":
+            return numbered[:idx + 1]
+    for idx in range(1, len(lines)):
+        if lines[idx].startswith("---"):
+            return numbered[:idx + 1]
+    return numbered
 
 
 HEADING_RE = re.compile(r"^ {0,3}(#{1,6})(?:[ \t]+(.*?))?[ \t]*#*[ \t]*$")
@@ -481,11 +566,11 @@ def text_problem(key, value, problems, one_line=False):
             f"line {value.lineno}: '{key}' is written plain as '{value}', which a YAML reader "
             f"reads as {kind}; {quote}"
         )
-    elif isinstance(value, Plain) and value[0] in QUOTE_FIRST:
+    elif isinstance(value, Plain) and not unicodedata.category(value[0]).startswith("L"):
         msg = (
             f"line {value.lineno}: '{key}' is written plain as '{value}', which starts with "
-            f"'{value[0]}'; a plain value that starts with a digit, '+', '-', '.', '~' or ':' "
-            f"is not taken as text; {quote}"
+            f"'{value[0]}', not a letter; a plain value is taken as text only when it starts "
+            f"with a letter; {quote}"
         )
     elif value == "":
         msg = f"'{key}' is empty"
@@ -540,7 +625,9 @@ def main(argv):
         except FrontMatterError as exc:
             problems[RULE_FRONT_MATTER].append(str(exc))
             fm_lines, body = None, [(n + 1, l) for n, l in enumerate(text.split("\n"))]
-        if fm_lines is not None:
+        bad_chars = character_problems(front_matter_extent(text))
+        problems[RULE_FRONT_MATTER].extend(bad_chars)
+        if fm_lines is not None and not bad_chars:
             try:
                 data = parse_front_matter(fm_lines)
             except FrontMatterError as exc:
