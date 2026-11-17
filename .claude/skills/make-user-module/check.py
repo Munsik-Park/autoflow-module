@@ -13,9 +13,16 @@ Writing rules are checked on the values so read. The module list is
 `values` takes `name`, `metadata.goal` (only when `metadata` is a mapping) and
 `description` as its `entry` does. A front matter that file cannot read, where
 it lists an error entry, does not meet the front matter rule, and the line gives
-that error; so does one nested too deep for its `mapping` (Python's recursion
-limit), on which that file stops. How other YAML readers read the front matter
-is not checked.
+that error. How other YAML readers read the front matter is not checked.
+
+Nesting bound: a front matter whose keys nest 32 levels or deeper (the
+top-level keys are level 1) does not meet the front matter rule, and is not
+read. That file's `mapping` calls itself once per level and stops with
+RecursionError when the levels come near Python's recursion limit (1000 by
+default), at a depth that depends on the calls around it; the module list
+cannot reliably read nesting that deep, so check.py fails well below it. The
+levels are counted as `mapping` would descend, up to the line on which it would
+stop.
 
 On the values so read, the script checks the Writing rules of
 docs/module-interface.md that can be checked mechanically:
@@ -37,12 +44,21 @@ Anything else the front matter holds is not checked.
 
 The body is the lines after the line that closes the front matter, as
 `front_matter` finds it, or the whole file when there is no front matter.
-Sections are the level-2 headings (`## `) outside fenced code blocks; a level-1
-heading also ends a section. A deeper heading (`###` and below) belongs to the
-section it is in, whatever its title. A section has content only when it has a
-line that is not blank, not a heading and not a fence marker line; a line inside
-a fenced code block counts only when the fence is closed. An empty fenced block,
-sub-headings alone, or an unclosed fence is no content.
+Blocks are found as CommonMark 0.31.2 finds them: fenced code blocks, indented
+code blocks, and HTML blocks of all seven kinds, each from its start condition
+to its end condition as the specification states them; one not closed runs to
+the end of the body. An indented code block and an HTML block of kind 7 do not
+interrupt a paragraph. Block quotes and list items are not read as containers:
+every line is read as a line of the document itself.
+
+A line inside one of those blocks is never a heading. Sections are the level-2
+headings (`## `) outside them; a level-1 heading also ends a section. A deeper
+heading (`###` and below) belongs to the section it is in, whatever its title.
+A section has content only when it has a line that is not blank, not a heading,
+not a fence marker line and not in an HTML block; a line inside a fenced code
+block counts only when the fence is closed, and a line of an indented code block
+counts. An empty fenced block, sub-headings alone, an unclosed fence, or HTML
+blocks alone (a comment, for example) is no content.
 
 Output: one line per rule not met, starting with `rule not met:`, naming the
 rule as the interface words it, followed by what does not meet it. When the
@@ -108,9 +124,8 @@ SECTION_WORDS = {
 
 NAME_RE = re.compile(r"[a-z0-9-]+")
 
+MAX_DEPTH = 32
 
-# scalar, block, mapping and front_matter: tools/modules.py of
-# Munsik-Park/autoflow-coordinator, branch module-interface, commit 24f8759.
 
 def scalar(v):
     v = v.strip()
@@ -184,9 +199,45 @@ def front_matter(path):
 
 
 def values(fm):
-    """`name`, `metadata.goal` and `description`, taken as tools/modules.py's `entry` takes them."""
     meta = fm.get('metadata')
     return fm.get('name'), meta.get('goal') if isinstance(meta, dict) else None, fm.get('description')
+
+
+def depth(text):
+    """Levels `mapping` would descend in the front matter of text, the top-level keys being
+    level 1, up to the line on which it would stop; 0 when front_matter would find none."""
+    lines = text.split('\n')
+    if lines[0].strip() != '---':
+        return 0
+    end = next((n for n in range(1, len(lines)) if lines[n].strip() == '---'), None)
+    if end is None:
+        return 0
+    lines = lines[1:end]
+    indents = [0]
+    deepest = 1
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if not line.strip() or line.lstrip().startswith('#'):
+            i += 1
+            continue
+        ind = len(line) - len(line.lstrip())
+        while len(indents) > 1 and ind < indents[-1]:
+            indents.pop()
+        if ind > indents[-1] or ':' not in line:
+            break
+        rest = line.strip().partition(':')[2].strip()
+        i += 1
+        if rest in ('>', '>-', '|', '|-'):
+            while i < len(lines) and (not lines[i].strip() or len(lines[i]) - len(lines[i].lstrip()) > ind):
+                i += 1
+        elif not rest:
+            nxt = next((l for l in lines[i:] if l.strip()), '')
+            child = len(nxt) - len(nxt.lstrip())
+            if nxt and child > ind:
+                indents.append(child)
+                deepest = max(deepest, len(indents))
+    return deepest
 
 
 def body_lines(text):
@@ -204,20 +255,76 @@ def body_lines(text):
 HEADING_RE = re.compile(r"^ {0,3}(#{1,6})(?:[ \t]+(.*?))?[ \t]*#*[ \t]*$")
 FENCE_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
 FENCE_CLOSE_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})[ \t]*$")
+THEMATIC_BREAK_RE = re.compile(r"^ {0,3}(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$")
+SETEXT_UNDERLINE_RE = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
+
+TAG_NAME = r"[A-Za-z][A-Za-z0-9-]*"
+ATTRIBUTE = (
+    r"[ \t]+[A-Za-z_:][A-Za-z0-9_.:-]*"
+    r"(?:[ \t]*=[ \t]*(?:[^ \t\"'=<>`]+|'[^']*'|\"[^\"]*\"))?"
+)
+HTML_BLOCK_6_NAMES = (
+    "address|article|aside|base|basefont|blockquote|body|caption|center|col|"
+    "colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|"
+    "form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|hr|html|iframe|legend|li|"
+    "link|main|menu|menuitem|nav|noframes|ol|optgroup|option|p|param|search|"
+    "section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul"
+)
+HTML_BLOCK_START = [
+    (1, re.compile(r" {0,3}<(?:pre|script|style|textarea)(?:[ \t>]|$)", re.I)),
+    (2, re.compile(r" {0,3}<!--")),
+    (3, re.compile(r" {0,3}<\?")),
+    (4, re.compile(r" {0,3}<![A-Za-z]")),
+    (5, re.compile(r" {0,3}<!\[CDATA\[")),
+    (6, re.compile(rf" {{0,3}}</?(?:{HTML_BLOCK_6_NAMES})(?:[ \t>]|/>|$)", re.I)),
+    (7, re.compile(
+        rf" {{0,3}}(?:<(?!(?:pre|script|style|textarea)(?![A-Za-z0-9-])){TAG_NAME}(?:{ATTRIBUTE})*[ \t]*/?>"
+        rf"|</{TAG_NAME}[ \t]*>)[ \t]*$",
+        re.I,
+    )),
+]
+HTML_BLOCK_END = {
+    1: re.compile(r"</(?:pre|script|style|textarea)>", re.I),
+    2: re.compile(r"-->"),
+    3: re.compile(r"\?>"),
+    4: re.compile(r">"),
+    5: re.compile(r"\]\]>"),
+}
+
+
+def indentation(line):
+    col = 0
+    for ch in line:
+        if ch == " ":
+            col += 1
+        elif ch == "\t":
+            col += 4 - col % 4
+        else:
+            break
+    return col
+
+
+def html_block_start(line, paragraph):
+    for kind, start in HTML_BLOCK_START:
+        if start.match(line) and not (kind == 7 and paragraph):
+            return kind
+    return None
 
 
 def check_body(body, problems):
-    """Check the body's item sections.
-
-    Sections are the level-2 headings outside fenced code blocks; a level-1
-    heading also ends a section. A deeper heading belongs to the section it is
-    in and is not content. A line inside a fence counts as content only when
-    the fence is closed.
-    """
+    """Check the body's item sections, on the blocks the module docstring names."""
     found = {}
     current = None
     fence = None
     fence_text = False
+    html = None
+    indented_code = False
+    paragraph = False
+
+    def mark(line):
+        if current is not None and line.strip():
+            found[current][1] = True
+
     for lineno, line in body:
         if fence is not None:
             fm = FENCE_CLOSE_RE.match(line)
@@ -228,13 +335,42 @@ def check_body(body, problems):
             elif line.strip():
                 fence_text = True
             continue
+        blank = not line.strip(" \t")
+        if html is not None:
+            if html >= 6:
+                if blank:
+                    html = None
+                    paragraph = False
+            elif HTML_BLOCK_END[html].search(line):
+                html = None
+            continue
+        if indented_code:
+            if blank or indentation(line) >= 4:
+                mark(line)
+                continue
+            indented_code = False
+        if blank:
+            paragraph = False
+            continue
+        if not paragraph and indentation(line) >= 4:
+            indented_code = True
+            mark(line)
+            continue
         fm = FENCE_RE.match(line)
         if fm:
             fence = fm.group(1)
             fence_text = False
+            paragraph = False
+            continue
+        kind = html_block_start(line, paragraph)
+        if kind is not None:
+            paragraph = False
+            if kind >= 6 or not HTML_BLOCK_END[kind].search(line):
+                html = kind
             continue
         hm = HEADING_RE.match(line)
         if hm:
+            paragraph = False
             level = len(hm.group(1))
             if level > 2:
                 continue
@@ -253,8 +389,8 @@ def check_body(body, problems):
                         f"line {lineno}: '{line.strip()}' is not headed '## {word}'"
                     )
             continue
-        if current is not None and line.strip():
-            found[current][1] = True
+        paragraph = not (THEMATIC_BREAK_RE.match(line) or (paragraph and SETEXT_UNDERLINE_RE.match(line)))
+        mark(line)
     for word in SECTIONS:
         if word in found:
             if not found[word][1]:
@@ -341,7 +477,6 @@ def main(argv):
 
     fm = None
     try:
-        fm = front_matter(path)
         text = open(path, encoding="utf-8").read()
     except OSError as exc:
         print(f"usage error: cannot read '{path}': {exc}", file=sys.stderr)
@@ -349,18 +484,21 @@ def main(argv):
     except UnicodeDecodeError as exc:
         problems[RULE_FRONT_MATTER].append(f"the coordinator's module list cannot read the file: {exc}")
         text = None
-    except ValueError as exc:
-        where = " (line 1 is the line after the opening '---')" if str(exc).startswith("line ") else ""
-        problems[RULE_FRONT_MATTER].append(
-            f"the coordinator's module list cannot read the front matter: {exc}{where}"
-        )
-        text = open(path, encoding="utf-8").read()
-    except RecursionError:
-        problems[RULE_FRONT_MATTER].append(
-            "the coordinator's module list cannot read the front matter: its keys are nested too deep"
-        )
-        text = open(path, encoding="utf-8").read()
     if text is not None:
+        levels = depth(text)
+        if levels >= MAX_DEPTH:
+            problems[RULE_FRONT_MATTER].append(
+                f"the front matter nests {levels} levels deep, {MAX_DEPTH} or more: "
+                "the coordinator's module list cannot reliably read nesting that deep"
+            )
+        else:
+            try:
+                fm = front_matter(path)
+            except ValueError as exc:
+                where = " (line 1 is the line after the opening '---')" if str(exc).startswith("line ") else ""
+                problems[RULE_FRONT_MATTER].append(
+                    f"the coordinator's module list cannot read the front matter: {exc}{where}"
+                )
         check_body(body_lines(text), problems)
 
     if fm is not None:
