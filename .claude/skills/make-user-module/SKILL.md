@@ -29,7 +29,7 @@ Paths below are relative to the repository root, the folder holding `docs/module
 
 2. **Learn what the module is to do.** Take what the user wants the module to do from the request. Ask the user for what each item of the interface's Module definition needs and the request does not settle.
 
-3. **Draft the module definition.** Choose `name` with the user. Write the draft as `<draft folder>/<name>/SKILL.md`, where `<draft folder>` is a new temporary folder outside this repository and outside any user module location (for example one made with `mktemp -d`). Write the front matter in the layout the default modules use, the only one `check.py` accepts: between the two `---` lines, the lines `name: <value>`, `description: <value>`, `metadata:` and `  goal: <value>` (indented two spaces), in this order and no other line — no other key, no repeated key, no blank line, no comment line, and no line ending with a space. Write `name` on one line. `description` may instead be written `description: >-` (or `>`, `|`, `|-`) and `goal` `  goal: >-` (or `|-`), followed by the text on lines each indented exactly two spaces more than the key, none blank. Use no whitespace other than space and the line end (no tab), and no control, format or separator character, anywhere in the front matter. Quote a one-line value (`"…"` or `'…'`) that does not start with a letter, is a null or boolean word (`null`, `y`, `n`, `yes`, `no`, `true`, `false`, `on`, `off`, in any case), holds `: ` or ` #`, or ends with `:`.
+3. **Draft the module definition.** Choose `name` with the user. Write the draft as `<draft folder>/<name>/SKILL.md`, where `<draft folder>` is a new temporary folder outside this repository and outside any user module location (for example one made with `mktemp -d`). Write the front matter in the form the default modules use: between the two `---` lines, `name: <value>`, `description: <value>`, `metadata:` and `  goal: <value>` (indented two spaces), with `name` on one line; `description` and `goal` may instead be written as a block (`description: >-`, followed by the text on lines indented two spaces more than the key). `check.py` reads the front matter as the coordinator's module list (`tools/modules.py` of Munsik-Park/autoflow-coordinator) reads it, and checks the Writing rules on the `name`, `description` and `metadata.goal` so read, which are the values the module list lists for the module.
 
 4. **Check the draft.** Run:
 
@@ -37,7 +37,7 @@ Paths below are relative to the repository root, the folder holding `docs/module
    python3 .claude/skills/make-user-module/check.py <draft folder>/<name>/SKILL.md
    ```
 
-   Exit status 0 means every rule it checks is met; 1 means a rule is not met, and each `rule not met:` line names the rule; 2 is a usage error. A `default module:` line says `name` is the name of a default module.
+   Exit status 0 means every rule it checks is met; 1 means a rule is not met, and each `rule not met:` line names the rule; 2 is a usage error. When the module list cannot read the front matter, the front matter rule is not met and the line gives the module list's error. A `default module:` line says the folder's name, which is `name` when the folder rule is met, is the name of a default module.
 
 5. **Show the draft.** Show the user the whole draft and the check's result. Name each rule not met. Revise the draft with the user and check it again (step 4) until it meets every rule and the user agrees to it. If the user changes `name`, move the draft to a folder of the new name.
 
