@@ -2,6 +2,16 @@
 
 AutoFlow modules written to the [module interface](docs/module-interface.md).
 
+AutoFlow is three repositories used together. This repository holds the modules, the steps of development; the other two run them and show them.
+
+| Repository | Place |
+| --- | --- |
+| autoflow-module (this repository) | The modules. Each is a folder holding one `SKILL.md` that defines a step, such as analysis, design, build and review. It also holds the skill that makes a user module. |
+| [autoflow-coordinator](https://github.com/Munsik-Park/autoflow-coordinator) | The coordination session and its tools. It assembles modules into a workflow, opens work sessions and judges their results. |
+| [Autoflow-ide](https://github.com/Munsik-Park/Autoflow-ide) | An issue-based terminal IDE over the coordinator: issues, runs and sessions on one screen. |
+
+How the three are used together, and the change notes, are in [Munsik-Park/autoflow](https://github.com/Munsik-Park/autoflow).
+
 Each module is a folder holding one `SKILL.md`, which defines the module: what it is for, what it needs, the state it works toward, when it stops, what it leaves, and its defaults.
 
 | Module | Goal |
@@ -25,7 +35,7 @@ Each module is a folder holding one `SKILL.md`, which defines the module: what i
 
 ## Running a module
 
-For now, a module is run by giving a session the path of the module's `SKILL.md` and the inputs its `input` section names. Criteria other than the module's defaults are given in the same instructions.
+A module is run by giving a session the path of the module's `SKILL.md` and the inputs its `input` section names. Criteria other than the module's defaults are given in the same instructions. From its 0.8.0-rc1, [autoflow-coordinator](https://github.com/Munsik-Park/autoflow-coordinator) runs the modules this way, each in a work session it opens.
 
 ## Making a user module
 
@@ -41,3 +51,5 @@ The skill is not a module. It is not a top-level folder of this repository holdi
 ## Version
 
 The version of the modules in this repository is in [`VERSION`](VERSION) at the repository root. It is separate from the version of the module interface, which is a date given in that document's [Version](docs/module-interface.md#version) section.
+
+The repositories of one AutoFlow version are used together. The modules at `0.8.0` go with [autoflow-coordinator](https://github.com/Munsik-Park/autoflow-coordinator) `0.8.0-rcN` and [Autoflow-ide](https://github.com/Munsik-Park/Autoflow-ide) `0.8.0`. Which versions go together, and what changed between versions, are in the [changelog](https://github.com/Munsik-Park/autoflow/blob/main/CHANGELOG.md) of Munsik-Park/autoflow.
