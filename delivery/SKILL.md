@@ -57,13 +57,14 @@ When the work stops, leave what was pushed or opened, and why it stopped.
 - State in the body, at the commit it stands on:
   - each applied criterion with met or not, and its evidence;
   - for each test, its runs: the command, the summary line, the exit status, the commit the code was at, the checkout's status, and the SHA-256 of its files;
+  - each one-off run (one that repeats a test, adds load, stresses or times it) that is evidence for a criterion or a test: its result, the failure rate its runs rule out when none failed, the CPU count, the load averages, the processes it ran in parallel, its number of runs, its length and the target's per-test timeout, and no line of another process;
   - each test placed in the target, with the defect it guards and the CI job expected to run it;
   - each test whose defect surfaces only after deployment and whose failure breaks the deployment or the operation as a whole, but that no job in the target's CI configuration runs, with the defect it would guard and that no job runs it;
   - each item verified other than by a test, with the method and why;
   - what could not be verified and why;
   - the alternatives the design set aside and why, when the design records them;
   - what is left undone.
-- Write the evidence in the body or in files of the repository: the work folder is local.
+- Write the evidence in the body or in files of the repository: the work folder is local. Write such a one-off run's result and conditions in the body, and a one-off run's scripts and logs in no file of the repository.
 - Write the pointer commit's message as `<type>(#<issue>): <description>`.
 - Run the target's lint over the staged files before the pointer commit.
 - Change nothing else: do not change code, merge, mark a pull request ready or add a label.
