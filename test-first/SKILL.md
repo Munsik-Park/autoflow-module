@@ -49,7 +49,7 @@ For each test:
 For the runs:
 
 - what was set to direct the files each test run writes;
-- each one-off run: its script and log, the CPU count, the load averages before and after it and at each failure, the other work read as process names and counts without their arguments, the processes it ran in parallel, its number of runs, its projected and actual length, the target's per-test timeout, and its result, with the failure rate its runs rule out when none failed;
+- each one-off run: its script and log, the CPU count, the load averages before and after it and at each failure, the other work read as process names and counts without their arguments, and how many were then using a CPU, the processes it ran in parallel, its number of runs, its projected and actual length, the target's per-test timeout, and its result, with the failure rate its runs rule out when none failed;
 - each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs, or that the work stopped;
 - each change to what the target's CI runs: the files it touches and what the target's test discovery collected before and after it.
 
