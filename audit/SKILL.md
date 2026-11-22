@@ -27,8 +27,7 @@ Helpful:
 
 - End when test-first is judged and every item is scored.
 - When test-first is not confirmed, score nothing and state what is missing.
-- Stop when a test run leaves a change or an untracked file outside what the target ignores, naming what it left.
-- When a test run does not fit in its method or environment, whether an instruction asks for it or a failure shows it, state the misfit and its grounds, and run a form that fits in its place when one shows what the run is meant to show; otherwise stop.
+- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, and run a form that fits in its place when one shows what the run is meant to show; otherwise stop.
 
 ## Output
 
@@ -46,8 +45,7 @@ Findings, each with its severity, `path:line`, weight and the grounds of the wei
 
 For the test runs it made:
 
-- what was set to direct the files each test run writes;
-- each one-off run: its script and log, the CPU count, the load averages before and after it and at each failure, the other work read as process names and counts without their arguments, and how many were then using a CPU, the processes it ran in parallel, its number of runs, its projected and actual length, the target's per-test timeout, and its result, with the failure rate its runs rule out when none failed;
+- each one-off run: its script and log, its result, the conditions it ran under, and what its fit was judged from;
 - each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs, or that the work stopped.
 
 On a re-score, which items were scored afresh and which were inherited.
@@ -68,11 +66,7 @@ When the work stops, leave what was done and why it stopped.
 - The weight changes neither severity nor any score.
 - Judge each test from its run records. A record is a run only when the log at its path carries the recorded summary line; state any other record as not run.
 - Confirm test-first for a test when its failing run is on a commit whose history has none of the commits after the head the first build run on the branch began at, up to the head the last build run ended at, its passing run is on a commit whose history has all of them, both records show a checkout whose status shows no change and no untracked file outside what the target ignores, and both give the SHA-256 its files have.
-- Direct the files a test run writes (caches, reports, temporary and home folders) to the work folder, through the tools' options or environment, and record what was set. Remove no file.
-- Choose for each test run a method whose single run settles what the run is meant to show. Use a one-off run, one that repeats a test, adds load, stresses or times it, only when no such method exists, and state the failure rate its runs without a failure rule out (about 3/n at 95% confidence for n runs).
-- Run a one-off run only within what the machine shares with other work: the other sessions, other runs and the operator's tools. Before it, read the CPU count, the 1- and 5-minute load averages and the processes of other work by name and count, without their arguments, and judge whether it fits the machine; only then run it once, within that fit, to measure its length, and project its total length. It fits the machine when the processes it runs in parallel, each worker of a test runner counted, number at most what the instructions set or, where they set none, half the CPU count, and, added to the higher load average or, where it is greater, the number of other work's processes then using a CPU, read from their state or CPU use and not their arguments, stay within the CPU count; a load already at or above the CPU count leaves no room. It fits in time when the projected length of all the module run's one-off runs stays within the time the instructions set or, where they set none, 15 minutes. The instructions set that time and that number, not the fit against the current load: it is read when the run starts, and a run an instruction asks for that fails it does not fit.
-- Stop the one-off runs when together they pass that time, stop every process a one-off run started, and confirm that none is left before the module run ends.
-- A single run of the target's tests, or of the files of them an instruction names, with the target's settings, is not a one-off run: keep those settings, its parallelism included, and run no one-off run beside it. Running the same tests again within the module run is a repeat.
-- Read the load averages when a one-off run fails. Record a failure of a one-off run that coincides, by that reading, with a load above the CPU count, the target's per-test timeout firing included, as a condition of the environment: what the run is meant to show is then not shown, neither as a pass nor as a confirmed failure, and the run does not fit. A failure of a one-off run at a load within the CPU count, a timeout included, and a failure of any other run, is a result about the test.
+- Choose for each test run a method and an environment that fit what the test is meant to show.
+- Run a one-off run, one that repeats a test, adds load, stresses or times it, only within what the machine shares with other work: the other sessions, other runs and the operator's tools. Judge its fit from what can be read on the machine, and record what the judgment was read from.
 - Keep each one-off run's script in the work folder with its log and result.
 - Only read; change nothing.
