@@ -30,7 +30,7 @@ Helpful:
 ## Exit
 
 - End when every item is scored.
-- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, and run a form that fits in its place when one shows what the run is meant to show; otherwise stop.
+- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment and within what the machine shares with other work. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, and run a form that fits in its place when one shows what the run is meant to show; otherwise stop.
 
 ## Output
 
