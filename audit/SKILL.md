@@ -15,8 +15,8 @@ metadata:
 Required:
 
 - The change (its commit range).
-- The build report.
-- The failing runs of the tests.
+- The build report, and on a re-run of build the earlier build reports.
+- The tests and their failing runs.
 
 Helpful:
 
@@ -32,7 +32,7 @@ Helpful:
 
 For each test:
 
-- the evidence read;
+- the evidence read: its run records, their logs and the SHA-256 of its files;
 - the judgment.
 
 For each item:
@@ -58,4 +58,6 @@ When the work stops, leave what was done and why it stopped.
 - Stated means stated by, first to last: the instructions of the call, and the target's own documents and files before the change's commits. Anything else read counts only where it cites one of these. Where two differ, the earlier stands, and the grounds name both.
 - Record the weight's grounds: the instructions' passage, a document's section and quoted sentence, a file and line at a commit, or the criterion; for `not established`, or where no environment was stated, what was looked for and where.
 - The weight changes neither severity nor any score.
+- Judge each test from its run records. A record is a run only when the log at its path carries the recorded summary line; state any other record as not run.
+- Confirm test-first for a test when its failing run is on a commit whose history has none of the commits after the head the first build run on the branch began at, up to the head the last build run ended at, its passing run is on a commit whose history has all of them, both records show a checkout whose status shows no change and no untracked file outside what the target ignores, and both give the SHA-256 its files have.
 - Only read; change nothing.
