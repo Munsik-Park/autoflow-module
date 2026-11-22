@@ -30,7 +30,7 @@ Helpful:
 ## Exit
 
 - End when every item is scored.
-- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment and within what the machine shares with other work. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, and run a form that fits in its place when one shows what the run is meant to show; otherwise stop.
+- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment and within what the machine shares with other work. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, find a form that fits and can show what the run is meant to show, and run it in its place. Stop only when no such form can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -44,7 +44,7 @@ Findings with their severity, `path:line`, weight and the grounds of the weight,
 For the test runs it made:
 
 - each one-off run: its script and log, its result, the conditions it ran under, and what its fit was judged from;
-- each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs, or that the work stopped.
+- each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs and how it shows what the run was meant to show, or, when the work stopped, the tool, permission or environment that could not be obtained.
 
 On a re-score, which items were scored afresh and which were inherited.
 

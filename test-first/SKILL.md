@@ -32,7 +32,7 @@ Helpful:
 - Stop when a test of a required behavior already passes on the current code, naming the item.
 - Stop when a run leaves a change or an untracked file outside what the target ignores, naming what it left.
 - Stop when the work for a test can go on only by a change to the target's tests in the tree, fixtures, `conftest`, test settings or workflow files beyond what the tests it is made for need or outside them, naming it.
-- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment and within what the machine shares with other work. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, and run a form that fits in its place when one shows what the run is meant to show; otherwise stop.
+- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment and within what the machine shares with other work. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, find a form that fits and can show what the run is meant to show, and run it in its place. Stop only when no such form can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -49,7 +49,7 @@ For each test:
 For the runs:
 
 - each one-off run: its script and log, its result, the conditions it ran under, and what its fit was judged from;
-- each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs, or that the work stopped;
+- each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs and how it shows what the run was meant to show, or, when the work stopped, the tool, permission or environment that could not be obtained;
 - each change made for a test to the target's tests in the tree, fixtures, `conftest`, test settings or workflow files: the files it touches and the grounds that the rest of the suite and the CI workflow run as before.
 
 When the work stops, leave what was done and why it stopped.
