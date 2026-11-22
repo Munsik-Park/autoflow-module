@@ -30,7 +30,7 @@ Helpful:
 
 - End when each item has its test and its failing run.
 - Stop when a test of a required behavior already passes on the current code, naming the item.
-- Stop when a run changes a file the target tracks, naming it.
+- Stop when a run leaves a change or an untracked file outside what the target ignores, naming what it left.
 
 ## Output
 
@@ -55,6 +55,5 @@ When the work stops, leave what was done and why it stopped.
 - Keep every other test in the work folder and run it by its path.
 - Write each run's log in the work folder.
 - Run each test on a checkout whose status shows no change and no untracked file outside what the target ignores, and record that status and the commit it was at.
-- After each run, remove the untracked files it left outside what the target ignores, and record what was removed.
 - Commit a test only when it is placed, and before its run: put no implementation in its commit, write the commit message as `<type>(#<issue>): <description>`, and run the target's lint over the staged files before the commit.
 - Do not push.

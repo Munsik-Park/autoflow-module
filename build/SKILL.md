@@ -31,7 +31,7 @@ Helpful:
 
 - End when the scope is implemented and each item is checked.
 - Stop when the work can go on only by changing a test you were given, when the criteria cannot all hold together, or when a criterion is shown wrong. Record what blocks.
-- Stop when a run changes a file the target tracks, naming it.
+- Stop when a run leaves a change or an untracked file outside what the target ignores, naming what it left.
 
 ## Output
 
@@ -68,7 +68,6 @@ When the work stops, leave what was done and what blocks, with how to reproduce 
 - Write each run's log in the work folder.
 - Run the target's tests locally once, the way the target runs them, and each test you were given or wrote that is not placed once by its path.
 - Make each run on the head the run ends at, on a checkout whose status shows no change and no untracked file outside what the target ignores, and record that status and the commit.
-- After each run, remove the untracked files it left outside what the target ignores, and record what was removed.
 - Commit a test you write only when it is placed, and before its run.
 - Write commit messages as `<type>(#<issue>): <description>`.
 - Run the target's lint over the staged files before each commit.
