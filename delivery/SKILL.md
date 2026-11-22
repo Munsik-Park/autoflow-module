@@ -58,7 +58,7 @@ When the work stops, leave what was pushed or opened, and why it stopped.
   - each applied criterion with met or not, and its evidence;
   - for each test, its runs: the command, the summary line, the exit status, the commit the code was at, the checkout's status, and the SHA-256 of its files;
   - each test placed in the target, with the defect it guards and the CI job expected to run it;
-  - each test that meets the conditions for placement but that no job in the target's CI configuration runs, with the defect it would guard and that no job runs it;
+  - each test whose defect surfaces only after deployment and whose failure breaks the deployment or the operation as a whole, but that no job in the target's CI configuration runs, with the defect it would guard and that no job runs it;
   - each item verified other than by a test, with the method and why;
   - what could not be verified and why;
   - the alternatives the design set aside and why, when the design records them;
