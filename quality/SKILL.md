@@ -55,6 +55,6 @@ When the work stops, leave what was done and why it stopped.
   - `not established`: it needs a condition of the environment, can occur, and no level for that property is stated; treated as must be addressed.
 - Stated means stated by, first to last: the instructions of the call, the applied criteria, and the target's own documents and files before the change's commits. Anything else read counts only where it cites one of these. Where two differ, the earlier stands, and the grounds name both.
 - Record the weight's grounds: the instructions' passage, a document's section and quoted sentence, a file and line at a commit, or the criterion; for `not established`, or where no environment was stated, what was looked for and where.
-- A weight carried from the audit evaluation or the findings deferred or separated stands when it carries its grounds and is not `not established`; otherwise the finding is given a weight here.
+- A weight carried from the audit evaluation or the findings deferred or separated stands when it carries its grounds, is not `not established`, and no source earlier in that order than its grounds states otherwise; otherwise the finding is given a weight here.
 - The weight changes neither severity nor any score.
 - Read only; change nothing.
