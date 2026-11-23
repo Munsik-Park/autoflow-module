@@ -33,7 +33,7 @@ Helpful:
 - Stop when the work can go on only by changing a test you were given, when the criteria cannot all hold together, or when a criterion is shown wrong. Record what blocks.
 - Stop when a run leaves a change or an untracked file outside what the target ignores, naming what it left.
 - Stop when the work for a test can go on only by a change to the target's tests in the tree, fixtures, `conftest`, test settings or workflow files beyond what the tests it is made for need or outside them, naming it.
-- Stop before any test run whose method and scale have not been judged to fit what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
+- Stop before any test run whose method and scale have not been judged against what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
