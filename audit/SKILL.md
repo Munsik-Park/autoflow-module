@@ -27,6 +27,7 @@ Helpful:
 
 - End when test-first is judged and every item is scored.
 - When test-first is not confirmed, score nothing and state what is missing.
+- Stop before any test run whose method and scale have not been judged against what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -41,6 +42,11 @@ For each item:
 - its ground.
 
 Findings, each with its severity, `path:line`, weight and the grounds of the weight, and recommendations.
+
+For the test runs it made:
+
+- each test run it made: the command, the log and its result, and for a run made beyond the target's own tests (any run other than one run of a test, with nothing added to it or to what it runs under, the way the target runs its tests or by its path), also its script and the conditions it ran under;
+- each test run that did not fit: the misfit and its grounds, and the method and scale run in its place with how they differ and how they show what the run must verify, or, when the work stopped, the tool, permission or environment that could not be obtained.
 
 On a re-score, which items were scored afresh and which were inherited.
 
@@ -60,4 +66,5 @@ When the work stops, leave what was done and why it stopped.
 - The weight changes neither severity nor any score.
 - Judge each test from its run records. A record is a run only when the log at its path carries the recorded summary line; state any other record as not run.
 - Confirm test-first for a test when its failing run is on a commit whose history has none of the commits after the head the first build run on the branch began at, up to the head the last build run ended at, its passing run is on a commit whose history has all of them, both records show a checkout whose status shows no change and no untracked file outside what the target ignores, and both give the SHA-256 its files have.
+- Keep the script of each run made beyond the target's own tests in the work folder with its log and result.
 - Only read; change nothing.
