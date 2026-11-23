@@ -33,7 +33,7 @@ Helpful:
 - Stop when the work can go on only by changing a test you were given, when the criteria cannot all hold together, or when a criterion is shown wrong. Record what blocks.
 - Stop when a run leaves a change or an untracked file outside what the target ignores, naming what it left.
 - Stop when the work for a test can go on only by a change to the target's tests in the tree, fixtures, `conftest`, test settings or workflow files beyond what the tests it is made for need or outside them, naming it.
-- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment and within what the machine shares with other work. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, find a form that fits and can show what the run is meant to show, and run it in its place. Stop on a misfit only when no such form can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
+- Before each test run, judge whether the method and scale it will run fit what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -53,8 +53,8 @@ The report:
 - each scope judgment;
 - each test placed in the target's tree, with the defect it guards, the CI job expected to run it and the configuration file that was read from;
 - each test whose defect surfaces only after deployment and whose failure breaks the deployment or the operation as a whole, but that no job in the target's CI configuration runs, with the defect it would guard and that no job runs it;
-- each one-off run: its script and log, its result, the conditions it ran under, and what its fit was judged from;
-- each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs and how it shows what the run was meant to show, or, when the work stopped, the tool, permission or environment that could not be obtained;
+- each test run it made: the command, the log and its result, and for a run made beyond the target's own tests (any run other than one run of a test, with nothing added to it or to what it runs under, the way the target runs its tests or by its path), also its script and the conditions it ran under;
+- each test run that did not fit: the misfit and its grounds, and the method and scale run in its place with how they differ and how they show what the run must verify, or, when the work stopped, the tool, permission or environment that could not be obtained;
 - each change made for a test to the target's tests in the tree, fixtures, `conftest`, test settings or workflow files: the files it touches and the grounds that the rest of the suite and the CI workflow run as before.
 
 When the work stops, leave what was done and what blocks, with how to reproduce it.
@@ -74,9 +74,7 @@ When the work stops, leave what was done and what blocks, with how to reproduce 
 - Write each run's log in the work folder.
 - Run the target's tests locally once, the way the target runs them, and each test you were given or wrote that is not placed once by its path.
 - Make each run on the head the run ends at, on a checkout whose status shows no change and no untracked file outside what the target ignores, and record that status and the commit.
-- Choose for each test run a method and an environment that fit what the test is meant to show.
-- Run a one-off run, one that repeats a test, adds load, stresses or times it, only within what the machine shares with other work: the other sessions, other runs and the operator's tools. Judge its fit from what can be read on the machine, and record what the judgment was read from.
-- Keep each one-off run's script in the work folder with its log and result.
+- Keep the script of each run made beyond the target's own tests in the work folder with its log and result.
 - Commit a test you write only when it is placed, and before its run.
 - Write commit messages as `<type>(#<issue>): <description>`.
 - Run the target's lint over the staged files before each commit.

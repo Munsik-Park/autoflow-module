@@ -27,7 +27,7 @@ Helpful:
 
 - End when test-first is judged and every item is scored.
 - When test-first is not confirmed, score nothing and state what is missing.
-- Before each test run, whether an instruction asks for it or not, judge whether it fits in its method and environment and within what the machine shares with other work. When it does not, by that judgment or as a failure shows, state the misfit and its grounds, find a form that fits and can show what the run is meant to show, and run it in its place. Stop on a misfit only when no such form can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
+- Before each test run, judge whether the method and scale it will run fit what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -45,8 +45,8 @@ Findings, each with its severity, `path:line`, weight and the grounds of the wei
 
 For the test runs it made:
 
-- each one-off run: its script and log, its result, the conditions it ran under, and what its fit was judged from;
-- each test run that did not fit: the misfit and its grounds, and the form run in its place with how it differs and how it shows what the run was meant to show, or, when the work stopped, the tool, permission or environment that could not be obtained.
+- each test run it made: the command, the log and its result, and for a run made beyond the target's own tests (any run other than one run of a test, with nothing added to it or to what it runs under, the way the target runs its tests or by its path), also its script and the conditions it ran under;
+- each test run that did not fit: the misfit and its grounds, and the method and scale run in its place with how they differ and how they show what the run must verify, or, when the work stopped, the tool, permission or environment that could not be obtained.
 
 On a re-score, which items were scored afresh and which were inherited.
 
@@ -66,7 +66,5 @@ When the work stops, leave what was done and why it stopped.
 - The weight changes neither severity nor any score.
 - Judge each test from its run records. A record is a run only when the log at its path carries the recorded summary line; state any other record as not run.
 - Confirm test-first for a test when its failing run is on a commit whose history has none of the commits after the head the first build run on the branch began at, up to the head the last build run ended at, its passing run is on a commit whose history has all of them, both records show a checkout whose status shows no change and no untracked file outside what the target ignores, and both give the SHA-256 its files have.
-- Choose for each test run a method and an environment that fit what the test is meant to show.
-- Run a one-off run, one that repeats a test, adds load, stresses or times it, only within what the machine shares with other work: the other sessions, other runs and the operator's tools. Judge its fit from what can be read on the machine, and record what the judgment was read from.
-- Keep each one-off run's script in the work folder with its log and result.
+- Keep the script of each run made beyond the target's own tests in the work folder with its log and result.
 - Only read; change nothing.
