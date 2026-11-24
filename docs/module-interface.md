@@ -136,11 +136,14 @@ The work AutoFlow handles is divided into stages. A module does the work of one 
 | Design | Structural decisions and their constraints, alternatives set aside, and how each criterion will be verified | design |
 | Implementation | Changes on a branch and their verification record, and the range of commits changed | test-first, build |
 | Evaluation | An independent score of an earlier stage's result, with its grounds and recommendations | hypothesis (analysis), plan (design), audit (tests-first and security of the implementation), quality (completeness) |
+| Criterion decision | A decision on each point raised about an acceptance criterion's content (the criterion kept, revised, split, excluded or added), with the text it decides and its grounds | criterion-decision |
 | Delivery | A pull request for the operator to look at and judge, the results and evidence for each criterion, and what could not be verified | delivery |
 | CI | The CI verdict on the pull request head, and its grounds | ci |
 | Review | A report gathering the reviewers' checks into one | review |
 
 An evaluation stage follows another stage and adds grounds for judging its result.
+
+A criterion decision stage follows the stage whose result raised the point, and the stages after it take its decisions.
 
 ### Reference compositions
 

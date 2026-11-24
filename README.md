@@ -21,6 +21,7 @@ Each module is a folder holding one `SKILL.md`, which defines the module: what i
 | [build](build/SKILL.md) | The design is implemented within its scope on the branch, the tests it was given pass, and each item of the verification design is checked as it says or the reason it is not is recorded. |
 | [ci](ci/SKILL.md) | Each pull request has a CI verdict and its ground. |
 | [criteria-apply](criteria-apply/SKILL.md) | The applied criteria are the report's criteria with every settled decision applied, in order. |
+| [criterion-decision](criterion-decision/SKILL.md) | Each point put to it has a decision (the criterion kept, revised, split, excluded or added), with the text it decides and its grounds. |
 | [criterion-in-depth](criterion-in-depth/SKILL.md) | Each target case of the criterion has a verdict resting on the code that decides the behavior and the condition applied there. |
 | [criterion-reconcile](criterion-reconcile/SKILL.md) | The review record agrees with the trace and the in-depth verdicts, each difference settled in the code, and every item has its disposition. |
 | [criterion-screen](criterion-screen/SKILL.md) | Each acceptance criterion is reviewed against the code and policy, each case it applies to has a verdict with its grounds, every item found has a disposition, and each case that needs an in-depth look is handed on. |
