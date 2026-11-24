@@ -37,6 +37,7 @@ The feature design:
 
 - each decision, its constraints, and the alternatives rejected with their grounds;
 - the scope: each problem included or separated, with its grounds, and a separation reason for each directly related problem left out;
+- each criterion shown wrong: its id, the fact that shows it wrong, how that was checked, the change proposed if any, and where the reading stops;
 - each point that could not be decided with confidence.
 
 The verification design:

@@ -45,7 +45,7 @@ The review record:
   - the verdict;
   - how far its grounds reach;
   - whether it is an in-depth target;
-- every item found, with its disposition and its grounds: a criterion kept, revised (with its text), split, excluded or added; a problem included or separated;
+- every item found, with its disposition and its grounds: a criterion kept, revised (with its text), split (with the id and text of each criterion it makes), excluded or added (with its text); a problem included or separated;
 - each item it could not decide with confidence;
 - what it could not confirm, and what it needed.
 
