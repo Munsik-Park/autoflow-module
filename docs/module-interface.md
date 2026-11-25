@@ -132,6 +132,7 @@ The work AutoFlow handles is divided into stages. A module does the work of one 
 | Stage | What it adds | Current modules |
 | --- | --- | --- |
 | Criteria review | Whether the issue's acceptance criteria hold against the code and policies, where they apply, and which cases to look at in depth | criterion-screen, criterion-trace, criterion-in-depth, criterion-reconcile |
+| Criterion decision | A decision on each point the criteria review raised about an acceptance criterion's content (the criterion kept, revised, split, excluded or added), with the text it decides and its grounds | criterion-decision |
 | Analysis | The current structure, its gap from the request, whether a change is needed and whether code is the means, decision points, and the criteria to apply to the work | analysis, criteria-apply |
 | Design | Structural decisions and their constraints, alternatives set aside, and how each criterion will be verified | design |
 | Implementation | Changes on a branch and their verification record, and the range of commits changed | test-first, build |
@@ -141,6 +142,8 @@ The work AutoFlow handles is divided into stages. A module does the work of one 
 | Review | A report gathering the reviewers' checks into one | review |
 
 An evaluation stage follows another stage and adds grounds for judging its result.
+
+A criterion decision stage follows a criteria review that disposes of a criterion by changing its content or leaves an item undecided, and the stages after it take its decisions.
 
 ### Reference compositions
 
