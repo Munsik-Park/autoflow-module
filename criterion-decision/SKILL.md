@@ -41,7 +41,7 @@ The decision record:
 - the situation;
 - per point, the criterion's id, the decision, the text decided on one line (for revised and added; for split, each criterion it makes with its id and text), the options weighed, the grounds, and one command with its result that checks the fact the decision rests on;
 - for a decision that replaces an earlier one, that decision and the fact or reproduced error that allows it;
-- each further decision the points need but do not ask for;
+- each further point the decisions raise, for the coordination session to put to it;
 - what it could not confirm and what it needed.
 
 When stopped: what was done and why it stopped.
@@ -54,7 +54,7 @@ When stopped: what was done and why it stopped.
 - Do not keep a criterion's letter by adding a rule it does not state.
 - Keep what a criterion requires as behavior a user, a caller or an operator observes.
 - Change a decision already made only on a fact that was not available when it was made and that a commit, a command's result or a file at a commit shows, or on an error in its grounds reproduced by a command; a different reading of the same material changes nothing.
-- Where two decisions already made on one criterion disagree, decide between them and name both.
+- Where two decisions already made on a criterion put to it disagree, decide between them and name both.
 - Ground each decision: a commit and `path:line` for a fact of the code, a command and its result, or a document, its section and a quoted sentence for a policy.
 - Do not decide how a criterion is verified.
 - Change nothing in the target.
