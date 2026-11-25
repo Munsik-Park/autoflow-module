@@ -47,6 +47,7 @@ The report:
 - each scope judgment (other sites of the cause, what fixing it exposes) with its grounds;
 - the documents the change is expected to update;
 - each decision point with its decision and grounds;
+- each criterion shown wrong: its id, the fact that shows it wrong, how that was checked, the change proposed if any, and where the reading stops;
 - each point it could not decide with confidence.
 
 When the work stops, leave what was done and why it stopped.

@@ -33,7 +33,7 @@ The review record brought up to date, as a new file:
 
 - the screen's record with the trace findings added as settled;
 - per trace finding and per in-depth case, whether it was applied, rejected or left unresolved, with grounds;
-- every item with its disposition;
+- every item with its disposition, and the text of each disposition that changes a criterion: revised with its text, split with the id and text of each criterion it makes, added with its text;
 - each item it could not decide with confidence.
 
 When the work stops, leave what was done and why it stopped.
