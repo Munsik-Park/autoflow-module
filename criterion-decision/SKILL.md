@@ -1,16 +1,13 @@
 ---
 name: criterion-decision
 description: >-
-  Choose when the work shows that the content of an acceptance criterion may
-  have to change and that change is not yet decided: an output records a
-  criterion shown wrong, a criteria review disposes of a criterion by changing
-  its content or leaves an item undecided, or a finding would change what a
-  criterion requires. Decides each point put to it (the criterion kept,
-  revised, split, excluded or added) from the material itself, weighing the
-  reading it is given without taking its conclusion. Runs in a new session of
-  its own, never the session whose work raised the point. Its decisions are
-  the criterion decisions criteria-apply and the later modules take. Does not
-  decide how a criterion is verified or how the change is made.
+  Choose when a criteria review disposes of a criterion by changing its
+  content or leaves an item undecided. Decides each point put to it (the
+  criterion kept, revised, split, excluded or added) from the material itself,
+  weighing the reading it is given without taking its conclusion. Runs in a
+  new session of its own, never the session whose work raised the point. Its
+  decisions are the criterion decisions criteria-apply and the later modules
+  take. Does not decide how a criterion is verified or how the change is made.
 metadata:
   goal: Each point put to it has a decision (the criterion kept, revised, split, excluded or added), with the text it decides and its grounds.
 ---
