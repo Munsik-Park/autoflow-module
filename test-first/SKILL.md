@@ -2,13 +2,9 @@
 name: test-first
 description: >-
   Choose when the required behavior must be pinned by tests before it is
-  implemented. Writes a test for each item the verification design checks by
-  test and shows it failing on the code without the implementation. Each test
-  stays in the work folder with its run record; only a test that guards a
-  defect surfacing only after deployment and breaking the deployment or the
-  operation as a whole, and that a job of the target's CI runs, is committed on
-  the branch. Usually used after design and before build. Does not implement
-  the change.
+  implemented. Each test stays in the work folder with its run record; only a
+  test the target must keep is committed on the branch. Usually used after
+  design and before build. Does not implement the change.
 metadata:
   goal: Each item to be checked by test has a test, seen failing on the code without the implementation, shown by its log.
 ---
@@ -32,7 +28,7 @@ Helpful:
 - Stop when a test of a required behavior already passes on the current code, naming the item.
 - Stop when a run leaves a change or an untracked file outside what the target ignores, naming what it left.
 - Stop when the work for a test can go on only by a change beyond what that test needs or outside it, naming it.
-- Stop before any test run whose method and scale have not been judged against what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
+- Stop before any test run whose method and scale have not been judged against what the run must verify, which the judgment does not change: neither too little to show it nor more than showing it needs. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -57,9 +53,9 @@ When the work stops, leave what was done and why it stopped.
 ## Default
 
 - Classify each test by when the defect it checks surfaces: one run on the change's checkout settles it, or it surfaces only after deployment. Read this from the target's code, documents, build, packaging and deployment files and CI configuration, and record what was read.
-- Place a test in the target only when its defect surfaces only after deployment, its failure breaks the deployment or the operation as a whole, and a job in the target's CI configuration runs it. That a later change could break the behavior is no ground for placing a test.
-- Do not add to or change what the target's CI runs in order to place a test.
-- A change made for a test holds only what that test needs and stays inside it, so the target's other tests and its CI run as before. A placed test written into the tree is not itself an addition to or a change of what the target's CI runs.
+- Place a test in the target only when its defect surfaces only after deployment, its failure breaks the deployment or the operation as a whole, and a job in the target's CI configuration runs it. A placed test is maintained like the code and runs in every later review and verification, while a later change is checked by its own run.
+- To place a test, add only the test; change nothing else the target's CI runs.
+- Anything changed for a test, such as a fixture or a setting, applies to that test alone and holds only what it needs, so the other tests and CI run as before.
 - Make a placed test follow the target's test conventions and be reached by its test discovery.
 - Keep every other test in the work folder and run it by its path.
 - Write each run's log in the work folder.

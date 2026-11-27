@@ -2,12 +2,9 @@
 name: design
 description: >-
   Choose after analysis and its evaluation when the change must be designed
-  before it is built. Writes a feature design (the architecture decisions, the
-  constraints they hold under, the alternatives rejected with grounds, and the
-  scope beyond the criteria) and a verification design (for each criterion and
-  scope item, how it is verified and what failure that catches, or why it is
-  not verified). Re-run with an evaluation, findings or a build that could not
-  proceed. Usually before plan and test-first. Does not implement.
+  before it is built. Writes a feature design and a verification design. Re-run
+  with an evaluation, findings or a build that could not proceed. Usually before
+  plan and test-first. Does not implement.
 metadata:
   goal: "A design the build can implement and verify: the decisions with their constraints and rejected alternatives, and a verification design that says how each criterion and scope item is verified and what failure each verification catches."
 ---
@@ -29,7 +26,7 @@ Helpful:
 ## Exit
 
 - End when every decision is made and every item has its verification or its reason.
-- Stop when a criterion is shown wrong or a point cannot be decided with confidence. Record it.
+- Stop when a criterion is shown wrong or a point cannot be decided with confidence.
 
 ## Output
 
