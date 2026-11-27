@@ -2,10 +2,7 @@
 name: criterion-reconcile
 description: >-
   Choose after criterion-trace and criterion-in-depth to settle the criteria
-  review. Where a trace finding or an in-depth verdict differs from the
-  screen's record, confirms in the code which holds and brings the record to
-  match. Its record is the result of the review, each item with its
-  disposition. Runs in a session of its own.
+  review. Its record is the result of the review. Runs in a session of its own.
 metadata:
   goal: >-
     The review record agrees with the trace and the in-depth verdicts, each

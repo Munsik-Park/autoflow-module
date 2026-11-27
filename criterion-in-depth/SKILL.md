@@ -2,10 +2,8 @@
 name: criterion-in-depth
 description: >-
   Choose for a criterion whose cases the screen handed on for an in-depth look.
-  Gives a verdict on each target case, resting on the code that decides whether
-  and how the required behavior occurs and the condition applied there. Runs
-  once per criterion, in a session given only that criterion's target file, so
-  its verdict does not lean on the screen's.
+  Runs once per criterion, in a session given only that criterion's target file,
+  so its verdict does not lean on the screen's.
 metadata:
   goal: >-
     Each target case of the criterion has a verdict resting on the code that

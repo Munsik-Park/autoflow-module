@@ -1,13 +1,11 @@
 ---
 name: analysis
 description: >-
-  Choose when the request must be understood before deciding on a change: the
-  affected structure as it stands, the gap from the requested behavior and, for
-  a defect, its cause, whether a change is owed and whether code is the lever,
-  and the decision points, each conclusion with its grounds. Restates the
-  issue's acceptance criteria. Usually after the criteria review, or first when
-  there is none, and before criteria-apply, hypothesis and design. Re-run with
-  an evaluation or findings to answer. Does not design or change code.
+  Choose when the request, and the cause of a defect it reports, must be
+  understood before deciding on a change. Restates the issue's acceptance
+  criteria. Usually after the criteria review, or first when there is none, and
+  before criteria-apply, hypothesis and design. Re-run with an evaluation or
+  findings to answer. Does not design or change code.
 metadata:
   goal: >-
     The request is understood well enough to be evaluated: the structure as it
@@ -55,9 +53,9 @@ When the work stops, leave what was done and why it stopped.
 ## Default
 
 - State the structure as fact, apart from the issue's hypothesis.
-- Conclude that code must change only on evidence that data, configuration, the environment or an earlier fix does not close the gap.
+- Conclude that code must change only on evidence that none of data, configuration, the environment or an earlier fix closes the gap, since a coding agent tends to write new code where none is needed.
 - Do not present a cause that is not established as established.
-- Do not mark down a resolution for reusing existing code.
-- Open every material the issue or a criterion references yourself.
+- Do not mark down a resolution for reusing existing code, since a coding agent tends to write anew what existing code already provides.
+- Open every material the issue or a criterion references yourself, since what the issue or someone else says of a material can differ from what the material shows.
 - On a re-run, keep the acceptance criteria table unchanged: a change to a criterion stands only as a decision.
 - Change nothing in the target.

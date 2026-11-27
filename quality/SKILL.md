@@ -30,7 +30,7 @@ Helpful:
 ## Exit
 
 - End when every item is scored.
-- Stop before any test run whose method and scale have not been judged against what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
+- Stop before any test run whose method and scale have not been judged against what the run must verify, which the judgment does not change: neither too little to show it nor more than showing it needs. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -41,7 +41,7 @@ For each item:
 
 Findings with their severity, `path:line`, weight and the grounds of the weight, and recommendations. A carried finding names its source, and a weight given here names the weight it carried.
 
-For the test runs it made:
+For the runs:
 
 - each test run it made: the command, the log and its result, and for a run made beyond the target's own tests (any run other than one run of a test, with nothing added to it or to what it runs under, the way the target runs its tests or by its path), also its script and the conditions it ran under;
 - each test run that did not fit: the misfit and its grounds, and the method and scale run in its place with how they differ and how they show what the run must verify, or, when the work stopped, the tool, permission or environment that could not be obtained.
@@ -54,8 +54,8 @@ When the work stops, leave what was done and why it stopped.
 
 - Score these items: completeness, quality, test coverage, test quality, security (from the audit), fit, impact scope, minimal implementation, commit conventions, documentation updates.
 - Take the test-first judgment of each test from the audit evaluation when it is among the inputs and judged the commits after the head the first build run on the branch began at, up to the head the last build run ended at. Otherwise judge it here: a record is a run only when the log at its path carries the recorded summary line, and test-first is confirmed for a test when its failing run is on a commit whose history has none of the commits after the head the first build run on the branch began at, up to the head the last build run ended at, its passing run is on a commit whose history has all of them, both records show a checkout whose status shows no change and no untracked file outside what the target ignores, and both give the SHA-256 its files have.
-- Score test coverage and test quality of a test not placed in the target from its run records and its test-first judgment. A recorded line its log does not carry counts against the item that cites it.
-- Under test quality, count against it a test placed in the target whose defect one run on the change's checkout settles, whose failure does not break the deployment or the operation as a whole, or that no job in the target's CI configuration runs; a placed test without the defect it guards and its CI job stated; and a change to what the target's CI runs made in order to place a test, or a change made for a test, other than the change the design scopes, beyond what that test needs or outside it. A placed test written into the tree is not itself an addition to or a change of what the target's CI runs.
+- Score test coverage and test quality of a test not placed in the target from its run records and its test-first judgment. A line in a run record that the run's log does not carry counts against the item that cites it.
+- Under test quality, count against it a test placed in the target whose defect one run on the change's checkout settles, whose failure does not break the deployment or the operation as a whole, or that no job in the target's CI configuration runs; a placed test without the defect it guards and its CI job stated; anything other than the test changed in what the target's CI runs to place it; and anything changed for a test, apart from the designed change, that does more than the test needs or applies beyond it.
 - Judge minimal implementation against the smallest sufficient change that resolves the confirmed problem within the scope. Fail the item when a hunk traces to none of it.
 - Score on a scale of 10: 9–10 excellent, 7–8 good, 5–6 insufficient, 3–4 poor, 1–2 failing.
 - Give each finding one weight by two questions. First: can its problem occur where the target actually runs? A problem that needs no condition of that environment can; one that needs such a condition can unless a stated environment rules it out. Second: does the level the target requires for the property the finding concerns oblige addressing it? Without a level stated for that property, a problem that needs no such condition takes as its level the criterion it was measured by, which obliges addressing it. The weight is one of:

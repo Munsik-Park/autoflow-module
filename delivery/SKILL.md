@@ -7,7 +7,7 @@ description: >-
   included, with the parent's pointer commit where one is needed. The body
   states each acceptance criterion with its outcome and evidence, how the
   change was shown working, what could not be verified and why, and what is
-  left undone, so the operator can decide on it. Usually used after the build
+  left undone. Usually used after the build
   and its evaluations, before ci and review. Does not change the change's code,
   re-run its tests or merge.
 metadata:
@@ -64,7 +64,7 @@ When the work stops, leave what was pushed or opened, and why it stopped.
   - what could not be verified and why;
   - the alternatives the design set aside and why, when the design records them;
   - what is left undone.
-- Write the evidence in the body or in files of the repository: the work folder is local. Write the result and conditions of such a run in the body, and its scripts and logs in no file of the repository.
+- Write the evidence in the body or in files of the repository: the work folder is local. Put the scripts and logs of a run made beyond the target's own tests in no file of the repository.
 - Write the pointer commit's message as `<type>(#<issue>): <description>`.
 - Run the target's lint over the staged files before the pointer commit.
 - Change nothing else: do not change code, merge, mark a pull request ready or add a label.

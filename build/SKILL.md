@@ -2,11 +2,10 @@
 name: build
 description: >-
   Choose when the design is settled and the change must be implemented on the
-  branch. Implements the design within its scope, makes the tests it is given
-  pass without changing them, checks each item of the verification design as
-  it says, and records the results. Leaves commits on the branch. Re-run on the
-  same branch with findings to answer them. Usually used after test-first,
-  before the evaluations and delivery. Does not push or open a pull request.
+  branch. Makes the tests it is given pass without changing them. Leaves
+  commits on the branch. Re-run on the same branch with findings to answer
+  them. Usually used after test-first, before the evaluations and delivery.
+  Does not push or open a pull request.
 metadata:
   goal: The design is implemented within its scope on the branch, the tests it was given pass, and each item of the verification design is checked as it says or the reason it is not is recorded.
 ---
@@ -33,7 +32,7 @@ Helpful:
 - Stop when the work can go on only by changing a test you were given, when the criteria cannot all hold together, or when a criterion is shown wrong. Record what blocks.
 - Stop when a run leaves a change or an untracked file outside what the target ignores, naming what it left.
 - Stop when the work for a test can go on only by a change beyond what that test needs or outside it, other than the change the design scopes, naming it.
-- Stop before any test run whose method and scale have not been judged against what the run must verify: neither too little to show it nor more than showing it needs. The judgment does not change what the run must verify. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
+- Stop before any test run whose method and scale have not been judged against what the run must verify, which the judgment does not change: neither too little to show it nor more than showing it needs. When they do not fit, by that judgment or as a failure shows, state this with its grounds, choose a method and scale that fit, and run them. Stop on a misfit only when no method and scale that fit can run for want of a tool, permission or environment that cannot be obtained, naming what is needed.
 
 ## Output
 
@@ -66,9 +65,9 @@ When the work stops, leave what was done and what blocks, with how to reproduce 
 - Record an improvement beyond the scope as a scope judgment instead of making it.
 - Keep the comments the change adds free of issue or pull request numbers, review rounds, criterion ids, change history and restatements of the code.
 - Classify each test you write by when the defect it checks surfaces: one run on the change's checkout settles it, or it surfaces only after deployment. Read this from the target's code, documents, build, packaging and deployment files and CI configuration, and record what was read.
-- Place a test you write in the target only when its defect surfaces only after deployment, its failure breaks the deployment or the operation as a whole, and a job in the target's CI configuration runs it. That a later change could break the behavior is no ground for placing a test.
-- Do not add to or change what the target's CI runs in order to place a test.
-- A change made for a test, other than the change the design scopes, holds only what that test needs and stays inside it, so the target's other tests and its CI run as before. A placed test written into the tree is not itself an addition to or a change of what the target's CI runs.
+- Place a test you write in the target only when its defect surfaces only after deployment, its failure breaks the deployment or the operation as a whole, and a job in the target's CI configuration runs it. A placed test is maintained like the code and runs in every later review and verification, while a later change is checked by its own run.
+- To place a test, add only the test; change nothing else the target's CI runs.
+- Apart from the designed change, anything changed for a test, such as a fixture or a setting, applies to that test alone and holds only what it needs, so the other tests and CI run as before.
 - Make a placed test follow the target's test conventions and be reached by its test discovery.
 - Keep every other test you write in the work folder.
 - Write each run's log in the work folder.
