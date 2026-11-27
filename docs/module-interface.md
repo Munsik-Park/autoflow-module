@@ -81,11 +81,13 @@ Each item is described in terms of the work, fully enough to do the work.
 
 ## Writing guidance
 
-Write so that a work session can work correctly from the module definition alone, and so that the definition stays easy to change later.
+Write so that the definition's readers act on it correctly, the coordination session in choosing the module and the work session in doing the work, and so that the definition can be changed on its own.
 
 - Write about the work in general. When it records what happened in one situation, the work session reads that as an instruction for every case.
 - Make the module definition complete on its own. When it and other documents point to each other, a change to one tangles the others.
-- Keep it light. The items are the seven above; anything else belongs in the workspace.
+- Give an instruction its reason when `goal` and `description` do not show it. Write the reason itself with the instruction, not a pointer to where it is recorded. A work session that knows why an instruction is given can follow its intent in a case the instruction does not name.
+- When an instruction turns out to be misread, or open to a misreading, rewrite the instruction and its reason so that the intended reading follows from them. Do not add a sentence that rules the misreading out; such a sentence answers that one case alone.
+- Keep it light. The items are the seven above; anything else belongs in the workspace. Within an item, keep a sentence only when it changes what its reader does, the coordination session choosing a module or the work session doing the work; each sentence adds to what is read. Remove a sentence only when it is plain that removing it changes nothing: one that seems to repeat another may still change how an instruction is read.
 
 ## Writing rules
 
