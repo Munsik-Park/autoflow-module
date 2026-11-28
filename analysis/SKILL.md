@@ -3,15 +3,15 @@ name: analysis
 description: >-
   Choose when the problem is set, by the criteria review or by the issue's
   criteria, and how to resolve it must be found before deciding on a change.
-  Takes the problem as given, from the criteria review record and the
-  criterion decisions where there are any and otherwise from the issue's
-  criteria, and finds whether a change is owed, whether code is the lever, the
-  approaches and the decision points. Restates the issue's acceptance
-  criteria. Its report is what hypothesis scores, what criteria-apply takes
-  the criteria table from and what design works from; each criterion it shows
-  wrong is stated with what shows it wrong, for a decision on that criterion.
-  Re-run with an evaluation or findings to answer. Does not design or change
-  code.
+  Takes the problem as given, from the criteria review record where there is
+  one and otherwise from the issue's criteria, with the criterion decisions
+  where there are any, and finds whether a change is owed, whether code is the
+  lever, the approaches and the decision points. Restates the issue's
+  acceptance criteria. Its report is what hypothesis scores, what
+  criteria-apply takes the criteria table from and what design works from;
+  each criterion it shows wrong is stated with what shows it wrong, for a
+  decision on that criterion. Re-run with an evaluation or findings to answer.
+  Does not design or change code.
 metadata:
   goal: >-
     How to resolve the problem as given is found well enough to be evaluated:

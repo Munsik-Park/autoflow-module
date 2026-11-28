@@ -1,6 +1,6 @@
 # AutoFlow Module Interface
 
-Version: 2026-11-09 (Draft)
+Version: 2026-11-28 (Draft)
 
 This document sets the form in which an AutoFlow module describes its work.
 
