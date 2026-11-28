@@ -56,13 +56,13 @@ When the work stops, leave what was done and why it stopped.
 
 - Score these items: authentication and authorization, input validation, data exposure, infrastructure isolation, dependencies.
 - Score each item on a scale of 10: 9–10 excellent, 7–8 good, 5–6 insufficient, 3–4 poor, 1–2 failing.
-- Give each finding one weight by two questions. First: can its problem occur where the target actually runs? A problem that needs no condition of that environment can; one that needs such a condition can unless a stated environment rules it out. Second: does the level the target requires for the property the finding concerns oblige addressing it? Without a level stated for that property, a problem that needs no such condition takes as its level the criterion it was measured by, which obliges addressing it. The weight is one of:
-  - `cannot occur`: a stated environment rules the problem out;
-  - `need not be addressed`: it can occur, and the level does not oblige addressing it;
-  - `must be addressed`: it can occur, and the level obliges addressing it;
-  - `not established`: it needs a condition of the environment, can occur, and no level for that property is stated; treated as must be addressed.
+- Give each finding one weight. A weight says how far a problem must be addressed where the target is actually used. Judge it from what is stated, as the target's maintainers would: a finding can hold and still describe a use the target does not have, while a use it has, by anyone who can reach it, brings the problem about however rarely. What the target requires is what is stated for the property, or else what the change sets out to do and what its use relies on; a criterion nothing states is not a requirement. The change is required to address only its share: what it introduces and, for a problem it makes reachable or worse, keeping itself from bringing it about without fixing the cause, which is left to a separate change. Addressing harm that cannot be undone, such as data lost or exposed, is required within that share however rarely it comes about. The weight is one of:
+  - `cannot occur`: the target's process cannot bring the problem about;
+  - `need not be addressed`: it can, but the actual use does not, or nothing the target requires asks for it;
+  - `must be addressed`: the actual use brings it about and what the target requires asks for it;
+  - `not established`: what is stated does not settle the weight.
 - Stated means stated by, first to last: the instructions of the call, and the target's own documents and files before the change's commits. Anything else read counts only where it cites one of these. Where two differ, the earlier stands, and the grounds name both.
-- Record the weight's grounds: the instructions' passage, a document's section and quoted sentence, a file and line at a commit, or the criterion; for `not established`, or where no environment was stated, what was looked for and where.
+- Record the weight's grounds: the instructions' passage, a document's section and quoted sentence, or a file and line at a commit; for `not established`, what was looked for and where.
 - The weight changes neither severity nor any score.
 - Judge each test from its run records. A record is a run only when the log at its path carries the recorded summary line; state any other record as not run.
 - Confirm test-first for a test when its failing run is on a commit whose history has none of the commits after the head the first build run on the branch began at, up to the head the last build run ended at, its passing run is on a commit whose history has all of them, both records show a checkout whose status shows no change and no untracked file outside what the target ignores, and both give the SHA-256 its files have.
