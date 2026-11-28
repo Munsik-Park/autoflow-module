@@ -1,19 +1,20 @@
 ---
 name: criterion-screen
 description: >-
-  Settles whether the problem the issue raises holds and what causes it, and
-  whether the issue's acceptance criteria could lead the work wrong or short
-  of done, by checking them against the code and policy. Takes the issue.
-  Reviews each criterion: fit with the code and policy, cause, actual against
-  expected behavior, contradiction, terms and scope, size and separation,
-  testability, unverified estimates. Screens every case each criterion applies
-  to: where the behavior shows, the code that decides it, and whether it
-  holds. Its review record states whether the problem holds, its cause and
-  each criterion's disposition; it can stand as the result of the criteria
-  review, or go to criterion-trace and criterion-reconcile to be widened and
-  settled. For each criterion with cases that need an in-depth look it writes
-  the target file criterion-in-depth takes. Does not decide how the change
-  will be made.
+  Checks the issue's acceptance criteria against the code and policy, as the
+  part of the criteria review that the rest of it works from; the criteria
+  review's result settles whether the problem the issue raises holds and what
+  causes it, and whether the criteria could lead the work wrong or short of
+  done. Takes the issue. Reviews each criterion: fit with the code and policy,
+  cause, actual against expected behavior, contradiction, terms and scope,
+  size and separation, testability, unverified estimates. Screens every case
+  each criterion applies to: where the behavior shows, the code that decides
+  it, and whether it holds. Its review record, and the target file it writes
+  for each criterion with cases that need an in-depth look, are what the other
+  criteria review modules take: criterion-trace and criterion-reconcile the
+  record, criterion-in-depth the target file. The result of the criteria
+  review is criterion-reconcile's record. Does not decide how the change will
+  be made.
 metadata:
   goal: >-
     Each acceptance criterion is reviewed against the code and policy, each

@@ -9,8 +9,9 @@ description: >-
   approaches and the decision points. Restates the issue's acceptance
   criteria. Its report is what hypothesis scores, what criteria-apply takes
   the criteria table from and what design works from; each criterion it shows
-  wrong is a point criterion-decision can decide. Re-run with an evaluation or
-  findings to answer. Does not design or change code.
+  wrong is stated with what shows it wrong, for a decision on that criterion.
+  Re-run with an evaluation or findings to answer. Does not design or change
+  code.
 metadata:
   goal: >-
     How to resolve the problem as given is found well enough to be evaluated:

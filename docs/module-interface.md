@@ -138,7 +138,7 @@ The work AutoFlow handles is divided into stages. A module does the work of one 
 | Analysis | How to resolve the problem as the criteria review or the issue's criteria set it: the current structure, the gap to close, whether a change is needed and whether code is the means, the approaches, decision points, and the criteria to apply to the work | analysis, criteria-apply |
 | Design | Structural decisions and their constraints, alternatives set aside, and how each criterion will be verified | design |
 | Implementation | Changes on a branch and their verification record, and the range of commits changed | test-first, build |
-| Evaluation | An independent score of an earlier stage's result, with its grounds and recommendations | hypothesis (analysis), plan (design), audit (tests-first and security of the implementation), quality (completeness) |
+| Evaluation | An independent score of another stage's result, with its grounds and recommendations | hypothesis (analysis), plan (design), audit (tests-first and security of the implementation), quality (completeness) |
 | Delivery | A pull request for the operator to look at and judge, the results and evidence for each criterion, and what could not be verified | delivery |
 | CI | The CI verdict on the pull request head, and its grounds | ci |
 | Review | A report gathering the reviewers' checks into one | review |
