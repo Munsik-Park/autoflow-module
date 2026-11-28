@@ -43,7 +43,7 @@ When the work stops, leave what was done and why it stopped.
 
 ## Default
 
-- Score these items: conclusion grounds (whether the evidence, re-derived from the source, supports the structure as stated, the gap, whether a change is owed and the lever), the problem as given (whether the problem the report states is the one analysis was given, re-derived from the criteria review record and the criterion decisions, or from the issue's criteria when there is no record), goal coverage (whether the report answers everything the analysis owes, for the whole request).
+- Score these items: conclusion grounds (whether the evidence, re-derived from the source, supports the structure as stated, the gap, whether a change is owed, the lever, the approaches and the decision points), the problem as given (whether the problem the report states is the one analysis was given, re-derived from the criteria review record and the criterion decisions, or from the issue's criteria when there is no record), goal coverage (whether the report answers everything the analysis owes, for the whole problem as given).
 - Score a well-grounded conclusion that no change is needed, or that the lever is not code, as high as a well-grounded code change.
 - Do not mark down reuse of existing code.
 - Score on a scale of 10: 9–10 excellent, 7–8 good, 5–6 insufficient, 3–4 poor, 1–2 failing.
