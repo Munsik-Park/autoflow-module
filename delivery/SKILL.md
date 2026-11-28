@@ -2,14 +2,14 @@
 name: delivery
 description: >-
   Choose when the change is committed on its branch, its local tests pass, and
-  it must reach the operator as a pull request. Pushes the branches and opens a
-  pull request in each repository the change touches, sub-repositories
+  it must reach the operator as a pull request. Pushes the branches and opens
+  a pull request in each repository the change touches, sub-repositories
   included, with the parent's pointer commit where one is needed. The body
   states each acceptance criterion with its outcome and evidence, how the
   change was shown working, what could not be verified and why, and what is
-  left undone. Usually used after the build
-  and its evaluations, before ci and review. Does not change the change's code,
-  re-run its tests or merge.
+  left undone. Its pull requests are what ci judges, what review reviews and
+  what the operator decides on. Does not change the change's code, re-run its
+  tests or merge.
 metadata:
   goal: Each branch of the change is pushed and has a pull request whose body lets the operator decide on it.
 ---

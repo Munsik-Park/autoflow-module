@@ -1,10 +1,12 @@
 ---
 name: design
 description: >-
-  Choose after analysis and its evaluation when the change must be designed
-  before it is built. Writes a feature design and a verification design. Re-run
-  with an evaluation, findings or a build that could not proceed. Usually before
-  plan and test-first. Does not implement.
+  Choose when the change's decisions, and how each criterion will be verified,
+  must be settled for it to be built. Takes the applied acceptance criteria
+  and the analysis report, and writes a feature design and a verification
+  design. Re-run with an evaluation, findings or a build that could not
+  proceed. The designs are what plan scores, what test-first writes its tests
+  from and what build implements and checks against. Does not implement.
 metadata:
   goal: "A design the build can implement and verify: the decisions with their constraints and rejected alternatives, and a verification design that says how each criterion and scope item is verified and what failure each verification catches."
 ---

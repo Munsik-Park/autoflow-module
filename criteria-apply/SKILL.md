@@ -1,9 +1,11 @@
 ---
 name: criteria-apply
 description: >-
-  Choose after analysis to fix the acceptance criteria the work goes by. Later
-  modules take its output instead of the report's table. Applies decisions;
-  judges nothing.
+  Fixes the acceptance criteria the work goes by: takes the criteria table of
+  the analysis report and applies each settled criterion decision to it, in
+  order. Applies decisions; judges nothing. Its applied criteria are what the
+  modules that design, build, evaluate and deliver the change take as the
+  acceptance criteria, instead of the report's table.
 metadata:
   goal: The applied criteria are the report's criteria with every settled decision applied, in order.
 ---

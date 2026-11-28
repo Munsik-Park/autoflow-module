@@ -2,9 +2,12 @@
 name: review
 description: >-
   Review one pull request with one or more reviewers and gather their reviews
-  into one verdict. Use when a pull request is to be reviewed and the result is
-  wanted as a single report: each reviewer is run on the pull request, and
+  into one verdict. Use when a pull request is to be reviewed and the result
+  is wanted as a single report: each reviewer is run on the pull request, and
   every finding is checked for whether it holds before it enters the report.
+  The report's verdict and findings, each weighed for whether it must be
+  addressed, are grounds for the decision on the pull request and what a
+  further change to it answers.
 metadata:
   goal: The pull request is reviewed, and its verdict and findings are set out in one report.
 ---

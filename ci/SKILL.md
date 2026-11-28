@@ -2,13 +2,13 @@
 name: ci
 description: >-
   Choose when a pull request is open and the CI result on its head commit is
-  needed as one verdict. Reads the checks published on GitHub and judges green,
-  failing or timed out. When the target's CI does not run for the pull request
-  at all (no workflow, or excluded by a trigger, path or condition), records
-  not-run with its ground, kept apart from a failure or a delay. Given the test
-  files the change added, confirms the CI job that actually ran each one.
-  Records the verdict in the pull request body; does not re-run CI or change
-  code. Usually used after delivery and before review.
+  needed as one verdict. Reads the checks published on GitHub and judges
+  green, failing or timed out. When the target's CI does not run for the pull
+  request at all (no workflow, or excluded by a trigger, path or condition),
+  records not-run with its ground, kept apart from a failure or a delay. Given
+  the test files the change added, confirms the CI job that actually ran each
+  one. Records the verdict in the pull request body, where it is grounds for
+  the decision on the pull request; does not re-run CI or change code.
 metadata:
   goal: Each pull request has a CI verdict and its ground.
 ---

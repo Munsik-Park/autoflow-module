@@ -1,8 +1,14 @@
 ---
 name: criterion-reconcile
 description: >-
-  Choose after criterion-trace and criterion-in-depth to settle the criteria
-  review. Its record is the result of the review. Runs in a session of its own.
+  Settles the criteria review into one record: takes criterion-screen's review
+  record, criterion-trace's findings and criterion-in-depth's verdicts, and
+  settles each difference between them in the code. Runs in a session of its
+  own. Its record is the result of the criteria review: whether the problem
+  the issue raises holds and what causes it, how far the cause reaches, and
+  each criterion's disposition. The record is the problem analysis takes; its
+  dispositions that change a criterion's content, and the items it leaves
+  undecided, are the points criterion-decision decides.
 metadata:
   goal: >-
     The review record agrees with the trace and the in-depth verdicts, each

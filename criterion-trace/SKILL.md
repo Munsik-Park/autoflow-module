@@ -1,11 +1,14 @@
 ---
 name: criterion-trace
 description: >-
-  Choose after criterion-screen when it must be known how far each confirmed
-  cause reaches beyond the points the issue reports, and whether each behavior
-  a criterion requires conflicts with the rules the code already has. Assumes
-  no fix. Runs in a session other than the screen's, given the issue and the
-  screen's review record only.
+  Choose when it must be known how far each cause the criteria review
+  confirmed reaches beyond the points the issue reports, and whether each
+  behavior a criterion requires conflicts with the rules the code already has.
+  Takes the issue and criterion-screen's review record only, in a session
+  other than the screen's, and assumes no fix. Its findings add to what the
+  criteria review settles about the problem the issue raises: how far its
+  cause reaches, and whether what the criteria require can hold.
+  criterion-reconcile settles them into the review record.
 metadata:
   goal: >-
     For each confirmed cause, how far it reaches beyond the reported points,

@@ -1,12 +1,14 @@
 ---
 name: hypothesis
 description: >-
-  Choose after analysis when an independent score is needed of whether the
-  analysis report's conclusion is supported by its grounds, whether the report
-  kept to the problem it was given and whether the analysis reached its goal.
-  Runs in a session other than the analysis's.
-  Re-derives the grounds from the source rather than the report's account.
-  Does not change anything.
+  Choose when an independent score is needed of whether the analysis report's
+  conclusion is supported by its grounds, whether the report kept to the
+  problem it was given and whether the analysis reached its goal. Takes the
+  analysis report and the issue, in a session other than the analysis's.
+  Re-derives the grounds from the source rather than the report's account. Its
+  scores and findings are grounds for judging whether the analysis report can
+  be worked from, and what a re-run of analysis answers. Does not change
+  anything.
 metadata:
   goal: Each item has a score and its ground.
 ---

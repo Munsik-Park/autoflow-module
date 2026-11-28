@@ -1,11 +1,13 @@
 ---
 name: audit
 description: >-
-  Choose after build when an independent judgment is needed that each test of a
-  required behavior failed on the code without the implementation and passes
-  with it, together with a security score of the change. Runs in a session
-  other than the one that made the change. Reads the change's commits, the
-  build report, the test records and git. Does not change anything.
+  Choose when an independent judgment is needed that each test of a required
+  behavior failed on the code without the implementation and passes with it,
+  together with a security score of the change. Runs in a session other than
+  the one that made the change. Reads the change's commits, the build report,
+  the test records and git. Its judgment, scores and findings are grounds for
+  judging whether the change can be delivered, and what a re-run of build
+  answers. Does not change anything.
 metadata:
   goal: Each test of a required behavior has a test-first judgment, and each security item has a score and its ground.
 ---

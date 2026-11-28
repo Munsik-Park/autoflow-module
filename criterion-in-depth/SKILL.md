@@ -1,9 +1,13 @@
 ---
 name: criterion-in-depth
 description: >-
-  Choose for a criterion whose cases the screen handed on for an in-depth look.
-  Runs once per criterion, in a session given only that criterion's target file,
-  so its verdict does not lean on the screen's.
+  Choose for a criterion with cases that need a verdict resting on the code
+  that decides the behavior. Runs once per criterion, in a session given only
+  that criterion's target file as criterion-screen writes it, so its verdict
+  does not lean on the screen's. Its verdicts show, case by case, whether the
+  behavior holds and the code and condition that decide it, which settles
+  whether the problem the issue raises holds there and what causes it.
+  criterion-reconcile settles them against the screen's record.
 metadata:
   goal: >-
     Each target case of the criterion has a verdict resting on the code that

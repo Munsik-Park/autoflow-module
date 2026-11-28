@@ -2,9 +2,11 @@
 name: test-first
 description: >-
   Choose when the required behavior must be pinned by tests before it is
-  implemented. Each test stays in the work folder with its run record; only a
-  test the target must keep is committed on the branch. Usually used after
-  design and before build. Does not implement the change.
+  implemented. Takes the branch, the applied criteria and the verification
+  design. Each test stays in the work folder with its run record; only a test
+  the target must keep is committed on the branch. Its tests are what build
+  makes pass without changing them, and their failing runs are the evidence
+  audit judges by. Does not implement the change.
 metadata:
   goal: Each item to be checked by test has a test, seen failing on the code without the implementation, shown by its log.
 ---

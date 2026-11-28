@@ -55,7 +55,7 @@ Each item is described in terms of the work, fully enough to do the work.
 
 - **description**
 
-  The situations in which this module is chosen. It states the situations it applies to and the way it works that set it apart from other modules doing the same work.
+  The module's role. It states the work the module does and the way it works that set it apart from other modules doing the same work, what it takes, and, where its result serves other work, how that result can be used. From these the coordination session works out how the modules relate; which module runs next is its decision, so a description places the module in no order of modules.
 
 - **goal**
 
@@ -105,7 +105,7 @@ A module definition follows the `SKILL.md` format of the Agent Skills specificat
 The review module filled in with this form:
 
 - name: review
-- description: When a pull request of a single repository is checked by several reviewers and the results are gathered into one verdict
+- description: Checks a pull request of a single repository with several reviewers and gathers the results into one verdict. Takes the pull request. The verdict and findings are grounds for the decision on the pull request
 - input: required is the pull request to review. What helps is the result of an earlier review, and the issue and the criteria applied to it
 - goal: The pull request review is done, and its verdict and findings are set out
 - exit: The goal is reached when every reviewer's check is gathered in the report. It stops when a reviewer cannot be run.
@@ -133,7 +133,7 @@ The work AutoFlow handles is divided into stages. A module does the work of one 
 
 | Stage | What it adds | Current modules |
 | --- | --- | --- |
-| Criteria review | Whether the issue's acceptance criteria hold against the code and policies, where they apply, and which cases to look at in depth | criterion-screen, criterion-trace, criterion-in-depth, criterion-reconcile |
+| Criteria review | Whether the problem the issue raises holds and what causes it, whether the issue's acceptance criteria hold against the code and policies, where they apply, and which cases to look at in depth | criterion-screen, criterion-trace, criterion-in-depth, criterion-reconcile |
 | Criterion decision | A decision on each point the criteria review raised about an acceptance criterion's content (the criterion kept, revised, split, excluded or added), with the text it decides and its grounds | criterion-decision |
 | Analysis | How to resolve the problem as the criteria review or the issue's criteria set it: the current structure, the gap to close, whether a change is needed and whether code is the means, the approaches, decision points, and the criteria to apply to the work | analysis, criteria-apply |
 | Design | Structural decisions and their constraints, alternatives set aside, and how each criterion will be verified | design |
@@ -143,9 +143,9 @@ The work AutoFlow handles is divided into stages. A module does the work of one 
 | CI | The CI verdict on the pull request head, and its grounds | ci |
 | Review | A report gathering the reviewers' checks into one | review |
 
-An evaluation stage follows another stage and adds grounds for judging its result.
+An evaluation stage takes another stage's result and adds grounds for judging it.
 
-A criterion decision stage follows a criteria review that disposes of a criterion by changing its content or leaves an item undecided, and the stages after it take its decisions.
+A criterion decision stage takes the points a criteria review raises by disposing of a criterion with a change to its content or by leaving an item undecided, and the stages that work by the criteria take its decisions.
 
 ### Reference compositions
 
@@ -153,8 +153,8 @@ Combinations that are often used. Use them as starting points, adding or removin
 
 | Composition | Stages | When used |
 | --- | --- | --- |
-| Full | Criteria review, analysis, design, implementation, delivery, CI, review; evaluation after analysis, design and implementation | When an issue is solved with AutoFlow from the start to a pull request |
-| Analysis and review | Analysis (criteria review first when the criteria are unclear), implementation and pull request outside AutoFlow, review | When finding how to resolve the problem and the review are done with AutoFlow and the implementation outside it |
+| Full | Criteria review, analysis, design, implementation, delivery, CI, review; evaluation of analysis, design and implementation | When an issue is solved with AutoFlow from the start to a pull request |
+| Analysis and review | Criteria review, analysis, implementation and pull request outside AutoFlow, review | When settling the problem, finding how to resolve it and the review are done with AutoFlow and the implementation outside it |
 | Review only | Work and pull request outside AutoFlow, review | When reviewing a change made outside AutoFlow, or an existing pull request |
 
 ## Open questions

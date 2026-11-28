@@ -1,10 +1,12 @@
 ---
 name: quality
 description: >-
-  Choose after build when an independent score is needed of whether the change
-  is complete, correct, verified and within its scope, against the acceptance
-  criteria and the design. Runs in a session other than the one that made the
-  change. Does not change anything.
+  Choose when an independent score is needed of whether the change is
+  complete, correct, verified and within its scope, against the acceptance
+  criteria and the design. Takes the change's commits, the applied criteria
+  and the build report, in a session other than the one that made the change.
+  Its scores and findings are grounds for judging whether the change can be
+  delivered, and what a re-run of build answers. Does not change anything.
 metadata:
   goal: Each quality item has a score and its ground.
 ---

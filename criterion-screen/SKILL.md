@@ -1,16 +1,19 @@
 ---
 name: criterion-screen
 description: >-
-  Choose before analysis when the issue's acceptance criteria could lead the
-  work wrong or short of done and need checking against the code and policy
-  first. Reviews each criterion: fit with the code and policy, cause, actual
-  against expected behavior, contradiction, terms and scope, size and
-  separation, testability, unverified estimates. Screens every case each
-  criterion applies to: where the behavior shows, the code that decides it,
-  and whether it holds. Hands on the cases that need an in-depth look, one
-  target file per criterion. The first criteria review module;
-  criterion-trace, criterion-in-depth and criterion-reconcile follow. Does not
-  decide how the change will be made.
+  Settles whether the problem the issue raises holds and what causes it, and
+  whether the issue's acceptance criteria could lead the work wrong or short
+  of done, by checking them against the code and policy. Takes the issue.
+  Reviews each criterion: fit with the code and policy, cause, actual against
+  expected behavior, contradiction, terms and scope, size and separation,
+  testability, unverified estimates. Screens every case each criterion applies
+  to: where the behavior shows, the code that decides it, and whether it
+  holds. Its review record states whether the problem holds, its cause and
+  each criterion's disposition; it can stand as the result of the criteria
+  review, or go to criterion-trace and criterion-reconcile to be widened and
+  settled. For each criterion with cases that need an in-depth look it writes
+  the target file criterion-in-depth takes. Does not decide how the change
+  will be made.
 metadata:
   goal: >-
     Each acceptance criterion is reviewed against the code and policy, each

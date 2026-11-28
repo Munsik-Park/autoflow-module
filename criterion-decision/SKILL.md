@@ -5,8 +5,8 @@ description: >-
   content or leaves an item undecided. Decides each point from the material
   itself, weighing the reading it is given without taking its conclusion. Runs
   in a new session of its own. Its decisions are the criterion decisions
-  criteria-apply and the later modules take. Does not decide how a criterion
-  is verified or how the change is made.
+  criteria-apply applies and the modules that work by the criteria take. Does
+  not decide how a criterion is verified or how the change is made.
 metadata:
   goal: Each point put to it has a decision (the criterion kept, revised, split, excluded or added), with the text it decides and its grounds.
 ---

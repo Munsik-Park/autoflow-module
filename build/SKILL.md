@@ -2,10 +2,12 @@
 name: build
 description: >-
   Choose when the design is settled and the change must be implemented on the
-  branch. Makes the tests it is given pass without changing them. Leaves
-  commits on the branch. Re-run on the same branch with findings to answer
-  them. Usually used after test-first, before the evaluations and delivery.
-  Does not push or open a pull request.
+  branch. Takes the applied criteria, the feature design and the verification
+  design, and makes the tests it is given pass without changing them. Leaves
+  commits on the branch and a report of how each item was checked: the change
+  and the record that audit and quality evaluate and delivery takes to a pull
+  request. Re-run on the same branch with findings to answer them. Does not
+  push or open a pull request.
 metadata:
   goal: The design is implemented within its scope on the branch, the tests it was given pass, and each item of the verification design is checked as it says or the reason it is not is recorded.
 ---

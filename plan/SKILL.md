@@ -1,10 +1,12 @@
 ---
 name: plan
 description: >-
-  Choose after design when an independent score of the design's intent is
-  needed: whether each decision is grounded, whether each criterion's
-  verification fits it, and whether the scope is right. Runs in a session
-  other than the design's. Does not change anything.
+  Choose when an independent score of the design's intent is needed: whether
+  each decision is grounded, whether each criterion's verification fits it,
+  and whether the scope is right. Takes the feature design, the verification
+  design and the applied criteria, in a session other than the design's. Its
+  scores and findings are grounds for judging whether the design can be built
+  from, and what a re-run of design answers. Does not change anything.
 metadata:
   goal: Each item has a score and its ground.
 ---
