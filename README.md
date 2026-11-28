@@ -16,7 +16,7 @@ Each module is a folder holding one `SKILL.md`, which defines the module: what i
 
 | Module | Goal |
 | --- | --- |
-| [analysis](analysis/SKILL.md) | The request is understood well enough to be evaluated: the structure as it stands, the gap, whether a change is owed and whether code is the lever, and the decision points, each conclusion with its grounds. |
+| [analysis](analysis/SKILL.md) | How to resolve the problem as given is found well enough to be evaluated: the structure as it stands, the gap to close, whether a change is owed and whether code is the lever, the approaches and the decision points, each conclusion with its grounds. |
 | [audit](audit/SKILL.md) | Each test of a required behavior has a test-first judgment, and each security item has a score and its ground. |
 | [build](build/SKILL.md) | The design is implemented within its scope on the branch, the tests it was given pass, and each item of the verification design is checked as it says or the reason it is not is recorded. |
 | [ci](ci/SKILL.md) | Each pull request has a CI verdict and its ground. |

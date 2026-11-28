@@ -135,7 +135,7 @@ The work AutoFlow handles is divided into stages. A module does the work of one 
 | --- | --- | --- |
 | Criteria review | Whether the issue's acceptance criteria hold against the code and policies, where they apply, and which cases to look at in depth | criterion-screen, criterion-trace, criterion-in-depth, criterion-reconcile |
 | Criterion decision | A decision on each point the criteria review raised about an acceptance criterion's content (the criterion kept, revised, split, excluded or added), with the text it decides and its grounds | criterion-decision |
-| Analysis | The current structure, its gap from the request, whether a change is needed and whether code is the means, decision points, and the criteria to apply to the work | analysis, criteria-apply |
+| Analysis | How to resolve the problem as the criteria review or the issue's criteria set it: the current structure, the gap to close, whether a change is needed and whether code is the means, the approaches, decision points, and the criteria to apply to the work | analysis, criteria-apply |
 | Design | Structural decisions and their constraints, alternatives set aside, and how each criterion will be verified | design |
 | Implementation | Changes on a branch and their verification record, and the range of commits changed | test-first, build |
 | Evaluation | An independent score of an earlier stage's result, with its grounds and recommendations | hypothesis (analysis), plan (design), audit (tests-first and security of the implementation), quality (completeness) |
@@ -154,7 +154,7 @@ Combinations that are often used. Use them as starting points, adding or removin
 | Composition | Stages | When used |
 | --- | --- | --- |
 | Full | Criteria review, analysis, design, implementation, delivery, CI, review; evaluation after analysis, design and implementation | When an issue is solved with AutoFlow from the start to a pull request |
-| Analysis and review | Analysis (criteria review first when the criteria are unclear), implementation and pull request outside AutoFlow, review | When finding the cause and the review are done with AutoFlow and the implementation outside it |
+| Analysis and review | Analysis (criteria review first when the criteria are unclear), implementation and pull request outside AutoFlow, review | When finding how to resolve the problem and the review are done with AutoFlow and the implementation outside it |
 | Review only | Work and pull request outside AutoFlow, review | When reviewing a change made outside AutoFlow, or an existing pull request |
 
 ## Open questions
